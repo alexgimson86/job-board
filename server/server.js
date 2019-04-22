@@ -15,12 +15,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 var cors = require('cors');
 //const morgan = require('morgan');
-var io = require('socket.io')
 var multer = require('multer');
 const uuidv4 = require('uuid/v4'); 
 const mongoose = require('./dbConnection.js');
 //db imports
-
 
 
 
@@ -30,7 +28,8 @@ const ObjectID = require('mongodb').ObjectID;
 //const formidableMiddleware = require('express-formidable');
 const port = 4000;
 const app = express();
-
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 /*app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000")
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,OPTIONS,DELETE");
@@ -64,15 +63,33 @@ var local = require('./passport/login')
 var initPassport = require('./passport/init');
 initPassport(passport);
 //const ObjectId = mongoose.Types.ObjectId;
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  let query = socket.request._query,
+  user = {
+      username : query.username,
+      socket_id : socket.id
+  };
 
+  socket.on('message', (data) => {
+    console.log(data);
+    socket.broadcast.emit('message', {
+        username : data.username,
+        message : data.message,
+        uid : data.uid
+    });
+});
+
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
 app.use(require('./routes/gets.js'));
 app.use(require('./routes/puts.js'));
 app.use(require('./routes/posts.js'));
 app.use(require('./routes/deletes.js'));
 
-
-
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
 
