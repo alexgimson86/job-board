@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Container, ListGroup } from 'react-bootstrap'
 import axios from 'axios'
 import io from 'socket.io-client';
 import {
@@ -7,6 +7,7 @@ import {
     Redirect,
     Route,
 } from "react-router-dom";
+
 import { runInThisContext } from 'vm';
 
 
@@ -21,8 +22,19 @@ class Chat extends Component {
     }
     componentDidMount(){
         this.initChat()
+        axios.get('http://localhost:4000/get_messages')
+        .catch(err => {
+            console.log(err)
+        }).then(results =>{
+            let returnMessages = results.data.map(( doc, i )=> <ListGroup.Item key={i}>{doc.username} said  {doc.message}</ListGroup.Item>)
+            this.setState({
+                messages: returnMessages
+            })
+        })
+        
     }
     initChat = () => {
+
         this.socket = io('http://localhost:4000');
         this.socket.on('connect', () => {
             console.log('connected');
@@ -35,30 +47,31 @@ class Chat extends Component {
     }
 
 
-    sendMessage = () => {
-        let tempMessages = this.state.messages.push(this.state.message)
+    sendMessage = (event) => {
+        event.preventDefault();
+        axios({
+            method: 'post',
+            url: 'http://localhost:4000/post_message',
+            data: {
+                message: this.state.message,
+                username: sessionStorage.getItem('myCurrentUsername')
+            }
+        })
+       
+        let tempMessages = this.state.messages.concat(this.state.message)
         this.setState({
-            messages: tempMessages
+            messages: tempMessages,
         })
-        this.socket.emit('message', {
+        this.socket.emit('chat message', {
             username : sessionStorage.getItem('myCurrentUsername'),
-            message : this.state.messages,
-         } )
-    }
-    handleClick = (e) => {
-        //do stuff
-    }
-    goToSignup = () => {
-        var toLogin = null;
-        toLogin = "/signup"
-        this.setState(() => {
-            return { loginRedirect: "/signup" }
+            message : this.state.message,
         })
-        return <Redirect to={toLogin} />
     }
     render() {
 
         return (
+            <Container>
+
             <Form>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                     <Form.Label>messenger input</Form.Label>
@@ -68,6 +81,10 @@ class Chat extends Component {
                     Submit
   </Button>
             </Form>
+            <ListGroup>
+            {this.state.messages ? this.state.messages : ''}
+            </ListGroup>
+            </Container>
         );
     }
 }

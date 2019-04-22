@@ -8,6 +8,7 @@ const StudentSchema = require('../models/Students');
 const InstructorSchema = require('../models/Instructors');
 const ResumeSchema = require('../models/Resumes');
 const UserSchema = require('../models/Users') 
+const MessageSchema = require('../models/Messages') 
 
 const ObjectID = require('mongodb').ObjectID;
 const Recruiter = mongoose.model('Recruiter', RecruiterSchema);
@@ -16,6 +17,7 @@ const Job = mongoose.model('Job', JobSchema);
 const Instructor = mongoose.model('Instructor', InstructorSchema);
 const Resume = mongoose.model('Resume', ResumeSchema);
 const User = mongoose.model('User', UserSchema);
+const Messages = mongoose.model('Messages', MessageSchema);
 
 var isAuthenticated = function (req, res, next) {
     // if user is authenticated in the session, call the next() to call the next request handler 
@@ -82,7 +84,12 @@ router.get('/recruiter/:recruiter_id', (req, res) => {
         res.json(recruiter);
     });
 });
-
+router.get('/get_messages', (req,res)=>{
+    Messages.find((err, msg) =>{
+        if(err) res.send(err)
+        else res.json(msg)
+    })
+});
 router.get('/job/:job_id', (req, res) => {
     Job.findById(req.params.job_id, (err, job) => {
         if (err)

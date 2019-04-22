@@ -18,6 +18,7 @@ const StudentSchema = require('../models/Students');
 const InstructorSchema = require('../models/Instructors');
 const ResumeSchema = require('../models/Resumes');
 const UserSchema = require('../models/Users') 
+const MessageSchema = require('../models/Messages')
 
 const ObjectID = require('mongodb').ObjectID;
 const Recruiter = mongoose.model('Recruiter', RecruiterSchema);
@@ -26,6 +27,7 @@ const Job = mongoose.model('Job', JobSchema);
 const Instructor = mongoose.model('Instructor', InstructorSchema);
 const Resume = mongoose.model('Resume', ResumeSchema);
 const User = mongoose.model('User', UserSchema);
+const Messages = mongoose.model('Messages', MessageSchema);
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -153,4 +155,15 @@ router.post('/student/signup', (req, res) => {
   
   });
   
+  router.post('/post_message', (req, res) =>{
+    var messages = new Messages(req.body);
+    messages.save( err =>{
+      if (err){
+        console.log(err)
+      }
+      else{
+        res.status(200).send();
+      }
+    })
+  })
   module.exports = router

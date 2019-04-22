@@ -64,26 +64,13 @@ var initPassport = require('./passport/init');
 initPassport(passport);
 //const ObjectId = mongoose.Types.ObjectId;
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  let query = socket.request._query,
-  user = {
-      username : query.username,
-      socket_id : socket.id
-  };
-
-  socket.on('message', (data) => {
-    console.log(data);
-    socket.broadcast.emit('message', {
-        username : data.username,
-        message : data.message,
-        uid : data.uid
-    });
-});
-
-  socket.on('my other event', function (data) {
-    console.log(data);
+  socket.on('chat message', function(msg){
+    console.log('message: ' + msg);
+    io.emit('chat message', msg);
   });
 });
+
+  
 app.use(require('./routes/gets.js'));
 app.use(require('./routes/puts.js'));
 app.use(require('./routes/posts.js'));
