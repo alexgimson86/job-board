@@ -16,7 +16,8 @@ export default class JobSeekers extends Component {
             username: null,
             myInfo: null,
             redirectToProfile: null,
-            
+            redirectToChat: null
+
 
         }
     }
@@ -38,23 +39,30 @@ export default class JobSeekers extends Component {
     studentList = (student) => {
         return <StudentComponent key={student._id} studentInfo={student} />
     }
+
     goToProfile = () => {
-        let myUsername =  sessionStorage.getItem("myCurrentUsername");
+        let myUsername = sessionStorage.getItem("myCurrentUsername");
         let link = `/profilePage/${myUsername}`;
-        this.setState({ 
-            redirectToProfile:link 
+        this.setState({
+            redirectToProfile: link
+        })
+    }
+    goToChat = () => {
+        let link = `/chat`;
+        this.setState({
+            redirectToChat: link
         })
     }
     componentDidMount() {
-        
+
         axios.get('http://localhost:4000/student',
             { withCredentials: true }
         ).then(results => {
             let otherUsersList = [];
             let myUserInformation = {};
-           let myUsername =  sessionStorage.getItem("myCurrentUsername");
+            let myUsername = sessionStorage.getItem("myCurrentUsername");
             results.data.forEach((student) => {
-                if(student.username !== myUsername)
+                if (student.username !== myUsername)
                     otherUsersList.push(this.studentList(student));
                 else
                     myUserInformation = this.studentList(student)
@@ -69,44 +77,50 @@ export default class JobSeekers extends Component {
         })
     }
     render() {
-        let profile = this.state.redirectToProfile
         if (this.state.redirect) {
             return <Redirect to={{ pathname: this.state.redirect }} />
         }
-        else if(this.state.redirectToProfile){
-           return <Redirect to={{ pathname: this.state.redirectToProfile, state: { myId: this.state.myInfo.key} }}/>
+        else if (this.state.redirectToProfile) {
+            return <Redirect to={{ pathname: this.state.redirectToProfile, state: { myId: this.state.myInfo.key } }} />
         }
-        else{
-        return (
-            <Container>
-                <Row>
-                    <Col>
-                        <Nav.Link className="justify-content-start" onClick={this.handleLogout}>
-                            LOG OUT
-                    </Nav.Link>
-                    </Col>
-                    <Col>
-                        <Nav.Link className="justify-content-end" onClick={this.goToProfile}eventKey="link-1">                    {this.props.match.params.username}
-                        </Nav.Link>
-                    </Col>
-                </Row>
-                <br />
+        else if(this.state.redirectToChat){
+            return <Redirect to={{pathname: this.state.redirectToChat}} />
+        }
+        else {
+            return (
                 <Container>
-                    <Table hover responsive>
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Introduction</th>
-                                <th>More Details</th>
-                            </tr>
-                        </thead>
-                        {this.state.mappedList ? this.state.mappedList : ""}
-                    </Table>
+                    <Nav>
+                        <Nav.Item>
+                            <Nav.Link className="justify-content-start" onClick={this.handleLogout}>
+                                LOG OUT
+                            </Nav.Link>     
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link className="justify-content-end" onClick={this.goToChat} eventKey="link-1">                  Chat Board
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link className="justify-content-end" onClick={this.goToProfile} eventKey="link-1">                    {this.props.match.params.username}
+                            </Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+                    <br />
+                    <Container>
+                        <Table hover responsive>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Introduction</th>
+                                    <th>More Details</th>
+                                </tr>
+                            </thead>
+                            {this.state.mappedList ? this.state.mappedList : ""}
+                        </Table>
+                    </Container>
                 </Container>
-            </Container>
 
-        )
+            )
         }
     }
 }
