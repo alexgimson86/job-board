@@ -39,7 +39,7 @@ class Chat extends Component {
         let user = sessionStorage.getItem('myCurrentUsername')
         this.socket = io.connect('http://localhost:4000');
         this.socket.on('append message', (data) => {
-            let tempMessages = this.state.messages.concat( `${user} said ${this.state.message}`)
+            let tempMessages = this.state.messages.concat( `${user} said ${data.message.message}`)
             this.setState({
                 messages: tempMessages,
             })
