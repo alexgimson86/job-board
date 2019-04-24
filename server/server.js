@@ -65,8 +65,7 @@ initPassport(passport);
 //const ObjectId = mongoose.Types.ObjectId;
 io.on('connection', function (socket) {
   socket.on('chat message', function(msg){
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
+    io.emit('append message',{message: msg })
   });
 });
 
