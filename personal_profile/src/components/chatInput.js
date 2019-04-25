@@ -66,10 +66,9 @@ class Chat extends Component {
             }
         })
 
-       /* let tempMessages = this.state.messages.concat( `${user} said ${this.state.message}` )
         this.setState({
-            messages: tempMessages,
-        })*/
+            message: ''
+        })
 
 
         this.socket.emit('chat message', {
@@ -90,8 +89,6 @@ class Chat extends Component {
         else
             return (
                 <Container>
-
-
                     <Form>
                         <Form.Group controlId="exampleForm.ControlTextarea1">
                             <Form.Label>messenger input</Form.Label>
