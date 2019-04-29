@@ -18,14 +18,16 @@ class PersonalInfo extends Component {
             city: '',
             personalWebsite: '',
             country: 'US',
-            title:'',
-            //resume:''
+            title: '',
+            recruiter: '',
+            student: '',
+            //resume:
 
 
         }
     }
     handleChange = (event) => {
-        this.setState({[event.target.name] : event.target.value });
+        this.setState({ [event.target.name]: event.target.value });
     }
     handleSubmit = (event) => {
         axios.post('http://localhost:4000/student/signup',
@@ -113,12 +115,14 @@ class PersonalInfo extends Component {
                         Resume Information
                     </h2>
                 </div>
+
                 <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                <label htmlFor="nameInput">Descriptive Introduction</label>
-                       <textarea id="desc" onChange={this.handleChange} name="title" value={this.state.title} className="form-control">
-                       </textarea>
-                </div>
+                    <div className="form-group">
+                        <label htmlFor="nameInput">Descriptive Introduction</label>
+                        <textarea id="desc" onChange={this.handleChange} name="title" value={this.state.title} className="form-control">
+                        </textarea>
+                    </div>
+                   
                     <div className="form-group">
                         <label htmlFor="nameInput">First Name</label>
                         <input required type="text" onChange={this.handleChange} value={this.state.firstName} className="form-control" id="fName" name="firstName" placeholder="Enter First Name" />
@@ -157,9 +161,9 @@ class PersonalInfo extends Component {
 
                     <button type="submit" value="Submit" className="btn btn-primary">Submit</button>
                 </form>
-                <br/>
-                <br/>
-                    <Resume studentId={this.state.studentId} />
+                <br />
+                <br />
+                <Resume studentId={this.state.studentId} />
             </div>
         );
     }

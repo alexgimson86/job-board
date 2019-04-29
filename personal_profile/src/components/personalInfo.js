@@ -23,11 +23,9 @@ class PersonalInfo extends Component {
             zip: '',
             city: '',
             personalWebsite: '',
-            studentId: '5c9ea2db5298ca1c52e48f48',
+            studentId: '',
             country: 'US',
             listPage: null,
-            recruiter: false,
-            student: false,
             //resume:''
 
 
@@ -56,8 +54,6 @@ class PersonalInfo extends Component {
                 country: this.state.country,
                 personalWebsite: this.state.personalWebsite,
                 title: this.state.title,
-                recruiter: this.state.recruiter,
-                student: this.state.student,
             })
             .then(response => {
             })
@@ -142,16 +138,7 @@ class PersonalInfo extends Component {
                 </div>
                 <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                <div>
-                        <input name="recruiter"
-                            type="checkbox"
-                            checked={this.state.recruiter}
-                            onChange={this.handleInputChange} />Recruiter<br />
-                        <input name="student"
-                            type="checkbox"
-                            checked={this.state.student}
-                            onChange={this.handleInputChange} />Student<br />
-                </div>
+                
                 <hr/>
                 <label htmlFor="nameInput">Descriptive Introduction</label>
                        <textarea id="desc" onChange={this.handleChange} name="title" value={this.state.title} className="form-control">

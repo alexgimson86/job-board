@@ -15,52 +15,77 @@ class Signup extends Component {
             username: '',
             password: '',
             passwordConfirm: '',
-            email:'',
+            email: '',
             redirect: null,
             formRedirect: null,
+            student: false,
+            recruiter: false,
         }
     }
     handleChange = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+    
         this.setState({
-            [event.target.name]: event.target.value
-        })
-    }
+          [name]: value
+        });
+      }
+    
     handleClick = (e) => {
         e.preventDefault();
-        if( this.state.password === this.state.passwordConfirm ){
-        axios({
-            method:'post',
-            url: `http://localhost:4000/student/signup`,
-            data: {
-                password: this.state.password,
-                username: this.state.username,
-                email: this.state.email,
+        if (this.state.password === this.state.passwordConfirm && this.state.student === true) {
+            axios({
+                method: 'post',
+                url: `http://localhost:4000/student/signup`,
+                data: {
+                    password: this.state.password,
+                    username: this.state.username,
+                    email: this.state.email,
 
-            }, 
-            withCredentials: true,
-        }).then(response => {
-            //document.cookie = `id=${response.data._id} path=/jobseekers/${response.data.username}`
-            let toForm = `/signup/${response.data.username}`
-            this.setState(()=>{
-                return  {formRedirect: toForm }
-              })
-              return <Redirect to={toForm} />
+                },
+                withCredentials: true,
+            }).then(response => {
+                //document.cookie = `id=${response.data._id} path=/jobseekers/${response.data.username}`
+                let toForm = `/signup/${response.data.username}`
+                sessionStorage.setItem("myCurrentUsername", response.data.username);
+                this.setState(() => {
+                    return { formRedirect: toForm }
+                })
+                return <Redirect to={toForm} />
             })
-            .catch(err => {
-                alert("error bad login data")
-                console.log(err)
-            });
+                .catch(err => {
+                    alert("error bad login data")
+                    console.log(err)
+                });
         }
-        else{
+        else if(this.state.password === this.state.passwordConfirm && this.state.recruiter === true){
+            axios({
+                method: 'post',
+                url:  `http://localhost:4000/recruiter/signup`,
+                data: {
+                    password: this.state.password,
+                    username: this.state.username,
+                    email: this.state.email,
+
+                },
+                withCredentials: true,
+            }).then( results => {
+
+            }).catch( err => {
+
+            })
+        }
+        else {
             alert('passwords must match')
         }
     }
     render() {
-        if(this.state.formRedirect){
-            return <Redirect to={{ pathname: this.state.formRedirect}} />
+        if (this.state.formRedirect) {
+            return <Redirect to={{ pathname: this.state.formRedirect }} />
         }
         else if (this.state.redirect) {
-            return <Redirect to={{ pathname: this.state.redirect}} />
+            return <Redirect to={{ pathname: this.state.redirect }} />
         }
         else {
             return (
@@ -77,7 +102,7 @@ class Signup extends Component {
                                 <Form.Label>email</Form.Label>
                                 <Form.Control type="email" name="email" onChange={this.handleChange} value={this.state.email} placeholder="Enter email" />
                             </Form.Group>
-                            
+
                             <Form.Group controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" name="password" onChange={this.handleChange} value={this.state.password} placeholder="Password" />
@@ -86,10 +111,31 @@ class Signup extends Component {
                                 <Form.Label>Confirm Password</Form.Label>
                                 <Form.Control type="password" name="passwordConfirm" onChange={this.handleChange} value={this.state.passwordConfirm} placeholder="Confirm Password" />
                             </Form.Group>
+                            <label>
+                               Student{'  '}
+
+                               <input
+                                    name="student"
+                                    type="checkbox"
+                                    checked={this.state.student}
+                                    onChange={this.handleChange} />
+                               
+                            </label>
+                            <br />
+                            <label>
+                                Recruiter{'  '}
+
+                            <input
+                                    name="recruiter"
+                                    type="checkbox"
+                                    value={this.state.recruiter}
+                                    onChange={this.handleChange} />
+                            </label><hr/>
+
                             <Button variant="primary" type="submit" onClick={this.handleClick}>
                                 Submit
                         </Button>
-                        </Form>;
+                        </Form>
                 </Container>
                 </Container >
             );

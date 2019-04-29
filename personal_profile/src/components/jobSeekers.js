@@ -55,7 +55,7 @@ export default class JobSeekers extends Component {
     }
     componentDidMount() {
 
-        axios.get('http://localhost:4000/student',
+        axios.get('http://localhost:4000/student/',
             { withCredentials: true }
         ).then(results => {
             let otherUsersList = [];
