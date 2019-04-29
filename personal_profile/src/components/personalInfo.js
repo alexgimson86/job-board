@@ -26,14 +26,22 @@ class PersonalInfo extends Component {
             studentId: '5c9ea2db5298ca1c52e48f48',
             country: 'US',
             listPage: null,
+            recruiter: false,
+            student: false,
             //resume:''
 
 
         }
     }
     handleChange = (event) => {
-        this.setState({[event.target.name] : event.target.value });
-    }
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+    
+        this.setState({
+          [name]: value
+        });
+      }
     handleSubmit = (event) => {
         event.preventDefault();
         axios.put('http://localhost:4000/student/'+this.props.match.params.username,
@@ -47,7 +55,9 @@ class PersonalInfo extends Component {
                 zip: this.state.zip,
                 country: this.state.country,
                 personalWebsite: this.state.personalWebsite,
-                title: this.state.title
+                title: this.state.title,
+                recruiter: this.state.recruiter,
+                student: this.state.student,
             })
             .then(response => {
             })
@@ -122,6 +132,7 @@ class PersonalInfo extends Component {
         if(this.state.listPage){
            return  <Redirect to={this.state.listPage} />
         }
+        
         return (
             <div className="container">
                 <div className="jumbotron">
@@ -131,6 +142,17 @@ class PersonalInfo extends Component {
                 </div>
                 <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
+                <div>
+                        <input name="recruiter"
+                            type="checkbox"
+                            checked={this.state.recruiter}
+                            onChange={this.handleInputChange} />Recruiter<br />
+                        <input name="student"
+                            type="checkbox"
+                            checked={this.state.student}
+                            onChange={this.handleInputChange} />Student<br />
+                </div>
+                <hr/>
                 <label htmlFor="nameInput">Descriptive Introduction</label>
                        <textarea id="desc" onChange={this.handleChange} name="title" value={this.state.title} className="form-control">
                        </textarea>
