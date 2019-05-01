@@ -52,26 +52,43 @@ const storage = multer.diskStorage({
   });
   const upload = multer({ storage: storage })
 router.post('/student/signup', (req, res) => {
-    console.log('in /student/signup, req.body sent is :\n', req.body)
-    //var student = new Student(req.body);
     var user = new User(req.body)
     console.log('user created is \n', user);
-    var student = new Student({ username:req.body.username }) 
-  
-    user.save(function (err, r) {
-      if (err) {
-        res.send(err)
-      }
-      else{
-        student.save(function(err,r){
-          if(err){
-            res.send(err)
-          }
-          res.json(student)
-        })
-      }
-    })
-  
+    var student;
+    var recruiter;
+
+    if(req.body.student){
+      student = new Student({ username:req.body.username }) 
+      user.save(function (err, r) {
+        if (err) {
+          res.send(err)
+        }
+        else{
+          student.save(function(err,r){
+            if(err){
+              res.send(err)
+            }
+            res.json(student)
+          })
+        }
+      })
+    }
+    else{
+      recruiter = new Recruiter({username: req.body.username})
+      user.save(function (err, r) {
+        if (err) {
+          res.send(err)
+        }
+        else{
+          recruiter.save(function(err,r){
+            if(err){
+              res.send(err)
+            }
+            res.json(recruiter)
+          })
+        }
+      })
+    }
   });
   //login with local strategy
   router.post('/student/login', 

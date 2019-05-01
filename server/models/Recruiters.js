@@ -7,32 +7,37 @@ var RecruiterSchema = new Schema(
     title: {
       // Full name * every collection will have an according title entry for versatile listing functionality
       type: String,
+      required: false,
+      trim: true
+    },
+    username: {
+      type: String,
       required: true,
       trim: true
     },
     companyName: {
       type: String,
-      required: true,
+      required: false,
       trim: true
     },
     firstName: {
       type: String,
-      required: true,
+      required: false,
       trim: true
     },
     lastName: {
       type: String,
-      required: true,
+      required: false,
       trim: true
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       trim: true
     },
     password: {
       type: String,
-      required: true
+      required: false
       //HASH
     },
     jobsPosted: {
@@ -41,7 +46,7 @@ var RecruiterSchema = new Schema(
     },    
     url: {
       type: String,
-      required: true
+      required: false
     }
   }
 );

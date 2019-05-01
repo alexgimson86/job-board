@@ -18,6 +18,7 @@ class Signup extends Component {
             email: '',
             redirect: null,
             formRedirect: null,
+            recruiterFormRedirect: null,
             student: false,
             recruiter: false,
         }
@@ -34,7 +35,7 @@ class Signup extends Component {
     
     handleClick = (e) => {
         e.preventDefault();
-        if (this.state.password === this.state.passwordConfirm && this.state.student === true) {
+        if (this.state.password === this.state.passwordConfirm && this.state.student === true || this.state.recruiter === true) {
             axios({
                 method: 'post',
                 url: `http://localhost:4000/student/signup`,
@@ -42,6 +43,8 @@ class Signup extends Component {
                     password: this.state.password,
                     username: this.state.username,
                     email: this.state.email,
+                    student: this.state.student,
+                    recruiter: this.state.recruiter,
 
                 },
                 withCredentials: true,
@@ -49,10 +52,17 @@ class Signup extends Component {
                 //document.cookie = `id=${response.data._id} path=/jobseekers/${response.data.username}`
                 let toForm = `/signup/${response.data.username}`
                 sessionStorage.setItem("myCurrentUsername", response.data.username);
-                this.setState(() => {
-                    return { formRedirect: toForm }
-                })
-                return <Redirect to={toForm} />
+                if(this.state.student){
+                    this.setState(() => {
+                        return { formRedirect: toForm }
+                    })
+                }
+                else{
+                    let toRecruiterForm = `/recruiterSignup/${response.data.username}`
+                    this.setState(() => {
+                        return { recruiterFormRedirect: toRecruiterForm }
+                    })
+                }
             })
                 .catch(err => {
                     alert("error bad login data")
@@ -87,6 +97,9 @@ class Signup extends Component {
         else if (this.state.redirect) {
             return <Redirect to={{ pathname: this.state.redirect }} />
         }
+        else if(this.state.recruiterFormRedirect) {
+            return <Redirect to={{ pathname: this.state.recruiterFormRedirect }}/>
+        }
         else {
             return (
                 <Container>
@@ -107,7 +120,7 @@ class Signup extends Component {
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" name="password" onChange={this.handleChange} value={this.state.password} placeholder="Password" />
                             </Form.Group>
-                            <Form.Group controlId="formBasicPassword">
+                            <Form.Group controlId="formBasicPasswordConfirm">
                                 <Form.Label>Confirm Password</Form.Label>
                                 <Form.Control type="password" name="passwordConfirm" onChange={this.handleChange} value={this.state.passwordConfirm} placeholder="Confirm Password" />
                             </Form.Group>
