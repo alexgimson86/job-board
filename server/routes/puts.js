@@ -103,18 +103,18 @@ router.put('/student/login/:id', (req, res) => { });
   
     });
   });
-  router.put('/recruiter/:recruiter_id', (req, res) => {
-    Recruiter.findById(req.params.recruiter_id, (err, recruiter) => {
+  router.put('/recruiter/:username', (req, res) => {
+    User.find({username: req.params.username }, (err, user) => {
   
-      recruiter.companyName = req.body.companyName;
-      recruiter.firstName = req.body.firstName;
-      recruiter.lastName = req.body.lastName;
-      recruiter.email = req.body.email;
-      recruiter.password = req.body.password;
-      recruiter.url = req.body.url; // updating recruiter info
+      user.companyName = req.body.company;
+      user.firstName = req.body.firstName;
+      user.lastName = req.body.lastName;
+      user.email = req.body.email;
+      user.password = req.body.password;
+      user.url = req.body.url; // updating recruiter info
   
       // save info
-      recruiter.save((err) => {
+      user.save((err) => {
         if (err)
           res.send(err);
   

@@ -27,12 +27,12 @@ class Signup extends Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-    
+
         this.setState({
-          [name]: value
+            [name]: value
         });
-      }
-    
+    }
+
     handleClick = (e) => {
         e.preventDefault();
         if (this.state.password === this.state.passwordConfirm && this.state.student === true || this.state.recruiter === true) {
@@ -50,29 +50,35 @@ class Signup extends Component {
                 withCredentials: true,
             }).then(response => {
                 //document.cookie = `id=${response.data._id} path=/jobseekers/${response.data.username}`
-                let toForm = `/signup/${response.data.username}`
-                sessionStorage.setItem("myCurrentUsername", response.data.username);
-                if(this.state.student){
-                    this.setState(() => {
-                        return { formRedirect: toForm }
-                    })
+                if (response.data.username) {
+                    let toForm = `/signup/${response.data.username}`
+                    sessionStorage.setItem("myCurrentUsername", response.data.username);
+                    if (this.state.student) {
+                        this.setState(() => {
+                            return { formRedirect: toForm }
+                        })
+                    }
+                    else {
+                        let toRecruiterForm = `/recruiterSignup/${response.data.username}`
+                        this.setState(() => {
+                            return { recruiterFormRedirect: toRecruiterForm }
+                        })
+                    }
                 }
                 else{
-                    let toRecruiterForm = `/recruiterSignup/${response.data.username}`
-                    this.setState(() => {
-                        return { recruiterFormRedirect: toRecruiterForm }
-                    })
+                    window.alert('choose new username')
                 }
             })
                 .catch(err => {
                     alert("error bad login data")
                     console.log(err)
                 });
+
         }
-        else if(this.state.password === this.state.passwordConfirm && this.state.recruiter === true){
+        else if (this.state.password === this.state.passwordConfirm && this.state.recruiter === true) {
             axios({
                 method: 'post',
-                url:  `http://localhost:4000/recruiter/signup`,
+                url: `http://localhost:4000/recruiter/signup`,
                 data: {
                     password: this.state.password,
                     username: this.state.username,
@@ -80,9 +86,9 @@ class Signup extends Component {
 
                 },
                 withCredentials: true,
-            }).then( results => {
+            }).then(results => {
 
-            }).catch( err => {
+            }).catch(err => {
 
             })
         }
@@ -97,8 +103,8 @@ class Signup extends Component {
         else if (this.state.redirect) {
             return <Redirect to={{ pathname: this.state.redirect }} />
         }
-        else if(this.state.recruiterFormRedirect) {
-            return <Redirect to={{ pathname: this.state.recruiterFormRedirect }}/>
+        else if (this.state.recruiterFormRedirect) {
+            return <Redirect to={{ pathname: this.state.recruiterFormRedirect }} />
         }
         else {
             return (
@@ -125,31 +131,31 @@ class Signup extends Component {
                                 <Form.Control type="password" name="passwordConfirm" onChange={this.handleChange} value={this.state.passwordConfirm} placeholder="Confirm Password" />
                             </Form.Group>
                             <label>
-                               Student{'  '}
+                                Student{'  '}
 
-                               <input
+                                <input
                                     name="student"
                                     type="checkbox"
                                     checked={this.state.student}
                                     onChange={this.handleChange} />
-                               
+
                             </label>
                             <br />
                             <label>
                                 Recruiter{'  '}
 
-                            <input
+                                <input
                                     name="recruiter"
                                     type="checkbox"
                                     value={this.state.recruiter}
                                     onChange={this.handleChange} />
-                            </label><hr/>
+                            </label><hr />
 
                             <Button variant="primary" type="submit" onClick={this.handleClick}>
                                 Submit
                         </Button>
                         </Form>
-                </Container>
+                    </Container>
                 </Container >
             );
         }

@@ -9,7 +9,7 @@ import DisplayResumeBig from './components/displayResumeBig';
 import Profile from './components/profile';
 import Chat from './components/chatInput';
 import RecruiterSignup from './components/recruiterSignup';
-
+import AddJobs from './components/addJobs';
 class App extends Component {
   render() {
     return (
@@ -23,6 +23,7 @@ class App extends Component {
           <Route exact path="/profilePage/:username" component={Profile} />
           <Route exact path="/chat" component={Chat} />
           <Route exact path="/recruiterSignup/:username" component={RecruiterSignup} />
+          <Route exact path="/addJobs/:username" component={AddJobs} />
         </Router>
       </div>
     );

@@ -21,10 +21,13 @@ class RecruiterSignup extends Component {
             state: 'TX',
             companyWebsite: '',
             country: 'US',
-            listPage: null,
+            addJobsPage: null,
             recruiterId: null,
             jobTitle:null,
-            jobs: [],
+            jobTitles: [],
+            jobDescriptions: [],
+            skills: [],
+
 
 
         }
@@ -38,36 +41,17 @@ class RecruiterSignup extends Component {
             [name]: value
         });
     }
-    addJob = () => {
-
-        let job = <li key={this.state.jobTitle}><input type="text" onChange={this.handleChange} value={this.state.jobTitle} className="form-control" name="jobTitle" id="jobTitle" aria-describedby="job title" placeholder="Enter Job Title" /></li>
-        if (this.state.jobs) {
-            var joinedJobs = this.state.jobs.concat(job)
-            this.setState({
-                jobs: [joinedJobs]
-            })
-        }
-        else {
-            this.setState({
-                jobs: [job]
-            })
-        }
-
-    }
+    
     handleSubmit = (event) => {
         event.preventDefault();
-        axios.put('http://localhost:4000/student/' + this.props.match.params.username,
+        axios.put('http://localhost:4000/recruiter/' + this.props.match.params.username,
             {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 phone: this.state.phone,
                 email: this.state.email,
-                state: this.state.state,
-                street: this.state.address,
-                zip: this.state.zip,
                 country: this.state.country,
-                personalWebsite: this.state.personalWebsite,
-                title: this.state.title,
+                url: this.state.personalWebsite,
             })
             .then(response => {
             })
@@ -75,72 +59,15 @@ class RecruiterSignup extends Component {
                 console.log(err)
             });
     }
-    returnToList = () => {
+    addJobs = () => {
         this.setState({
-            listPage: `/jobseekers/${this.props.match.params.username}`
+            addJobsPage: `/addJobs/${this.props.match.params.username}`
         })
 
     }
-    stateDropdown = () => {
-        let state =
-            (<select onChange={this.handleChange}>
-                <option value="AL">Alabama</option>
-                <option value="AK">Alaska</option>
-                <option value="AZ">Arizona</option>
-                <option value="AR">Arkansas</option>
-                <option value="CA">California</option>
-                <option value="CO">Colorado</option>
-                <option value="CT">Connecticut</option>
-                <option value="DE">Delaware</option>
-                <option value="DC">District Of Columbia</option>
-                <option value="FL">Florida</option>
-                <option value="GA">Georgia</option>
-                <option value="HI">Hawaii</option>
-                <option value="ID">Idaho</option>
-                <option value="IL">Illinois</option>
-                <option value="IN">Indiana</option>
-                <option value="IA">Iowa</option>
-                <option value="KS">Kansas</option>
-                <option value="KY">Kentucky</option>
-                <option value="LA">Louisiana</option>
-                <option value="ME">Maine</option>
-                <option value="MD">Maryland</option>
-                <option value="MA">Massachusetts</option>
-                <option value="MI">Michigan</option>
-                <option value="MN">Minnesota</option>
-                <option value="MS">Mississippi</option>
-                <option value="MO">Missouri</option>
-                <option value="MT">Montana</option>
-                <option value="NE">Nebraska</option>
-                <option value="NV">Nevada</option>
-                <option value="NH">New Hampshire</option>
-                <option value="NJ">New Jersey</option>
-                <option value="NM">New Mexico</option>
-                <option value="NY">New York</option>
-                <option value="NC">North Carolina</option>
-                <option value="ND">North Dakota</option>
-                <option value="OH">Ohio</option>
-                <option value="OK">Oklahoma</option>
-                <option value="OR">Oregon</option>
-                <option value="PA">Pennsylvania</option>
-                <option value="RI">Rhode Island</option>
-                <option value="SC">South Carolina</option>
-                <option value="SD">South Dakota</option>
-                <option value="TN">Tennessee</option>
-                <option selected value="TX">Texas</option>
-                <option value="UT">Utah</option>
-                <option value="VT">Vermont</option>
-                <option value="VA">Virginia</option>
-                <option value="WA">Washington</option>
-                <option value="WV">West Virginia</option>
-                <option value="WI">Wisconsin</option>
-                <option value="WY">Wyoming</option>
-            </select>)
-        return state;
-    }
     render() {
-        if (this.state.listPage) {
-            return <Redirect to={this.state.listPage} />
+        if (this.state.addJobs) {
+            return <Redirect to={this.state.addJobs} />
         }
 
         return (
@@ -178,43 +105,17 @@ class RecruiterSignup extends Component {
                         <label htmlFor="Company">Company Name</label>
                         <input type="text" onChange={this.handleChange} value={this.state.company} className="form-control" name="company" id="company" placeholder="Enter Company name" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="Address">City</label>
-                        <input type="text" onChange={this.handleChange} value={this.state.city} className="form-control" name="city" id="city" placeholder="Enter Street Address" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="Enter Zip Code ">Zip Code</label>
-                        <input type="text" onChange={this.handleChange} value={this.state.zip} className="form-control" name="zip" id="zip" placeholder="Enter Zip Code" />
-                    </div>
-                    <div className="form-group">
-                        {this.stateDropdown()}
-                    </div>
+                    
                     <div className="form-group">
                         <label htmlFor="Company Website">Company Website</label>
-                        <input type="text" onChange={this.handleChange} value={this.state.personalWebsite} className="form-control" name="companyWebsite" id="companyWebsite" placeholder="company website URL" />
+                        <input type="text" onChange={this.handleChange} value={this.state.companyWebsite} className="form-control" name="companyWebsite" id="companyWebsite" placeholder="company website URL" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="Company Website">Jobs</label>
-                        <div className="jobsDiv">
-
-                            <Button onClick={this.addJob}>Add Job</Button>
-                            <ol id="jobList">
-                                {this.state.jobs ? this.state.jobs.map(function (job) {
-                                    return job
-                                }) : ''}
-                            </ol>
-                        </div>
-                        <input type="text" onChange={this.handleChange} value={this.state.personalWebsite} className="form-control" name="companyWebsite" id="companyWebsite" placeholder="company website URL" />
-                    </div>
-
+                    
                     <button type="submit" value="Submit" className="btn btn-primary">Submit</button>
                 </form>
                 <br />
-                <br />
-                <Resume username={this.props.match.params.username} />
-                <br />
                 <hr />
-                <button onClick={this.returnToList}>Done</button>
+                <button onClick={this.addJobs}>Done</button>
             </div>
         );
     }

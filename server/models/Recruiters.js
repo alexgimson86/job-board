@@ -13,7 +13,9 @@ var RecruiterSchema = new Schema(
     username: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      unique: true,
+      dropDups: true,
     },
     companyName: {
       type: String,
@@ -50,5 +52,4 @@ var RecruiterSchema = new Schema(
     }
   }
 );
-
 module.exports = RecruiterSchema;

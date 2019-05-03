@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    dropDups: true,
   },
   recruiter: {
       type: Boolean,
@@ -16,7 +18,9 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    dropDups: true
   },
   password: {
     type: String,
