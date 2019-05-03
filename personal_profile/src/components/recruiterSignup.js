@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
 import '../styles/personalForm.css'
 import axios from 'axios';
+import { Button } from 'react-bootstrap'
 import Resume from './resumeUpload';
 import {
     BrowserRouter as Router,
-    Redirect ,
+    Redirect,
     Route,
 } from "react-router-dom";
 
@@ -14,7 +14,7 @@ class RecruiterSignup extends Component {
         super(props);
         this.state = {
             firstName: '',
-            title:'',
+            title: '',
             lastName: '',
             phone: '',
             email: '',
@@ -23,7 +23,8 @@ class RecruiterSignup extends Component {
             country: 'US',
             listPage: null,
             recruiterId: null,
-            //resume:''
+            jobTitle:null,
+            jobs: [],
 
 
         }
@@ -32,14 +33,30 @@ class RecruiterSignup extends Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-    
+
         this.setState({
-          [name]: value
+            [name]: value
         });
-      }
+    }
+    addJob = () => {
+
+        let job = <li key={this.state.jobTitle}><input type="text" onChange={this.handleChange} value={this.state.jobTitle} className="form-control" name="jobTitle" id="jobTitle" aria-describedby="job title" placeholder="Enter Job Title" /></li>
+        if (this.state.jobs) {
+            var joinedJobs = this.state.jobs.concat(job)
+            this.setState({
+                jobs: [joinedJobs]
+            })
+        }
+        else {
+            this.setState({
+                jobs: [job]
+            })
+        }
+
+    }
     handleSubmit = (event) => {
         event.preventDefault();
-        axios.put('http://localhost:4000/student/'+this.props.match.params.username,
+        axios.put('http://localhost:4000/student/' + this.props.match.params.username,
             {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
@@ -58,7 +75,7 @@ class RecruiterSignup extends Component {
                 console.log(err)
             });
     }
-    returnToList =() =>{
+    returnToList = () => {
         this.setState({
             listPage: `/jobseekers/${this.props.match.params.username}`
         })
@@ -122,48 +139,48 @@ class RecruiterSignup extends Component {
         return state;
     }
     render() {
-        if(this.state.listPage){
-           return  <Redirect to={this.state.listPage} />
+        if (this.state.listPage) {
+            return <Redirect to={this.state.listPage} />
         }
-        
+
         return (
             <div className="container">
                 <div className="jumbotron">
                     <h2>
-                        Resume Information
+                        Recruiter Signup
                     </h2>
                 </div>
                 <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                
-                <hr/>
-                <label htmlFor="nameInput">Descriptive Title</label>
-                       <textarea id="desc" onChange={this.handleChange} name="title" value={this.state.title} className="form-control">
-                       </textarea>
-                </div>
+                    <div className="form-group">
+
+                        <hr />
+                        <label htmlFor="nameInput">Descriptive Title</label>
+                        <textarea id="desc" onChange={this.handleChange} name="title" value={this.state.title} className="form-control">
+                        </textarea>
+                    </div>
                     <div className="form-group">
                         <label htmlFor="nameInput">First Name</label>
-                        <input  type="text" onChange={this.handleChange} value={this.state.firstName} className="form-control" id="fName" name="firstName" placeholder="Enter First Name" />
+                        <input type="text" onChange={this.handleChange} value={this.state.firstName} className="form-control" id="fName" name="firstName" placeholder="Enter First Name" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="lastName">Last Name</label>
-                        <input  type="text" onChange={this.handleChange} value={this.state.lastName} className="form-control" name="lastName" id="lName" placeholder="Enter Last Name" />
+                        <input type="text" onChange={this.handleChange} value={this.state.lastName} className="form-control" name="lastName" id="lName" placeholder="Enter Last Name" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
-                        <input  type="email" onChange={this.handleChange} value={this.state.email} className="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter Email" />
+                        <input type="email" onChange={this.handleChange} value={this.state.email} className="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter Email" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="phone">Phone Number</label>
-                        <input  type="text" onChange={this.handleChange} value={this.state.phone} className="form-control" name="phone" id="phone" aria-describedby="phone number" placeholder="Enter Phone Number" />
+                        <input type="text" onChange={this.handleChange} value={this.state.phone} className="form-control" name="phone" id="phone" aria-describedby="phone number" placeholder="Enter Phone Number" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Company">Company Name</label>
-                        <input  type="text" onChange={this.handleChange} value={this.state.company} className="form-control" name="company" id="company" placeholder="Enter Company name" />
+                        <input type="text" onChange={this.handleChange} value={this.state.company} className="form-control" name="company" id="company" placeholder="Enter Company name" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Address">City</label>
-                        <input  type="text" onChange={this.handleChange} value={this.state.city} className="form-control" name="city" id="city" placeholder="Enter Street Address" />
+                        <input type="text" onChange={this.handleChange} value={this.state.city} className="form-control" name="city" id="city" placeholder="Enter Street Address" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Enter Zip Code ">Zip Code</label>
@@ -173,18 +190,31 @@ class RecruiterSignup extends Component {
                         {this.stateDropdown()}
                     </div>
                     <div className="form-group">
-                        <label htmlFor="Personal Website">Personal Website</label>
-                        <input  type="text" onChange={this.handleChange} value={this.state.personalWebsite} className="form-control" name="personalWebsite" id="personalWebsite" placeholder="github or personal website URL" />
+                        <label htmlFor="Company Website">Company Website</label>
+                        <input type="text" onChange={this.handleChange} value={this.state.personalWebsite} className="form-control" name="companyWebsite" id="companyWebsite" placeholder="company website URL" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="Company Website">Jobs</label>
+                        <div className="jobsDiv">
+
+                            <Button onClick={this.addJob}>Add Job</Button>
+                            <ol id="jobList">
+                                {this.state.jobs ? this.state.jobs.map(function (job) {
+                                    return job
+                                }) : ''}
+                            </ol>
+                        </div>
+                        <input type="text" onChange={this.handleChange} value={this.state.personalWebsite} className="form-control" name="companyWebsite" id="companyWebsite" placeholder="company website URL" />
                     </div>
 
                     <button type="submit" value="Submit" className="btn btn-primary">Submit</button>
                 </form>
-                <br/>
-                <br/>
-                    <Resume username={this.props.match.params.username} />
-                    <br/>
-                    <hr/>
-                    <button onClick={this.returnToList}>Done</button>
+                <br />
+                <br />
+                <Resume username={this.props.match.params.username} />
+                <br />
+                <hr />
+                <button onClick={this.returnToList}>Done</button>
             </div>
         );
     }
