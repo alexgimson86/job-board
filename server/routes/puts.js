@@ -104,22 +104,16 @@ router.put('/student/login/:id', (req, res) => { });
     });
   });
   router.put('/recruiter/:username', (req, res) => {
-    User.find({username: req.params.username }, (err, user) => {
-  
-      user.companyName = req.body.company;
-      user.firstName = req.body.firstName;
-      user.lastName = req.body.lastName;
-      user.email = req.body.email;
-      user.password = req.body.password;
-      user.url = req.body.url; // updating recruiter info
-  
+    Recruiter.findOneAndUpdate({username: req.params.username }, {
+      company: req.body.companyName,
+      firstName: req.body.firstName,
+      lastName:req.body.lastName,
+      email: req.body.email,
+      url: req.body.url,
+    },(err,user)=> {
+      // updating recruiter info
       // save info
-      user.save((err) => {
-        if (err)
-          res.send(err);
-  
-        res.json({ message: 'Recruiter account information updated.' });
-      });
+      res.json({ message: 'Recruiter account information updated.' });
   
     });
   });

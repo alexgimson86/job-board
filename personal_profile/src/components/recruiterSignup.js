@@ -20,11 +20,11 @@ class RecruiterSignup extends Component {
             email: '',
             state: 'TX',
             companyWebsite: '',
+            companyName: '',
             country: 'US',
             addJobsPage: null,
             recruiterId: null,
-            jobTitle:null,
-            jobTitles: [],
+            title: null,
             jobDescriptions: [],
             skills: [],
 
@@ -52,6 +52,9 @@ class RecruiterSignup extends Component {
                 email: this.state.email,
                 country: this.state.country,
                 url: this.state.personalWebsite,
+                companyName: this.state.companyName,
+                title: this.state.title,
+                companyWebsite: this.state.companyWebsite,
             })
             .then(response => {
             })
@@ -103,7 +106,7 @@ class RecruiterSignup extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="Company">Company Name</label>
-                        <input type="text" onChange={this.handleChange} value={this.state.company} className="form-control" name="company" id="company" placeholder="Enter Company name" />
+                        <input type="text" onChange={this.handleChange} value={this.state.company} className="form-control" name="companyName" id="companyName" placeholder="Enter Company name" />
                     </div>
                     
                     <div className="form-group">
