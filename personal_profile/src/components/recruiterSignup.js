@@ -69,8 +69,8 @@ class RecruiterSignup extends Component {
 
     }
     render() {
-        if (this.state.addJobs) {
-            return <Redirect to={this.state.addJobs} />
+        if (this.state.addJobsPage) {
+            return <Redirect to={this.state.addJobsPage} />
         }
 
         return (
