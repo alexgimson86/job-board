@@ -42,7 +42,7 @@ router.put('/student/:student_username', (req, res) => {
       student.save((err) => {
         if (err)
           res.send(err);
-  
+        
         res.json({ message: 'Student account information updated.' });
       });
   
@@ -109,7 +109,7 @@ router.put('/student/login/:id', (req, res) => { });
       firstName: req.body.firstName,
       lastName:req.body.lastName,
       email: req.body.email,
-      url: req.body.url,
+      url: req.body.companyWebsite,
     },(err,user)=> {
       // updating recruiter info
       // save info

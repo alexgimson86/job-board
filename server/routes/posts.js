@@ -35,7 +35,17 @@ const storage = multer.diskStorage({
         Files will be saved in the 'uploads' directory. Make
         sure this directory already exists!
       */
-      cb(null, './server/public/uploads/');
+     var fullpath = __dirname.split('/');
+     fullpath.pop();
+     var st = '';
+     fullpath.forEach(function(item, i){
+       if(i < fullpath.length-1 && i !== 0){
+            
+        st += `/${item}`
+       }
+     })
+     st += '/server/public/uploads'
+      cb(null, st);
     },
     filename: (req, file, cb) => {
       /*
