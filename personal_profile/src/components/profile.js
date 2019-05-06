@@ -51,7 +51,7 @@ export default class Profile extends Component {
     })
   }
   goToEditPage = () => {
-    var editLink = `/signup/${this.state.userProfileInfo.username}`
+    var editLink = `/edit/${this.state.userProfileInfo.username}`
     this.setState({
       editPage: editLink
     })
@@ -67,6 +67,9 @@ export default class Profile extends Component {
   }
   render() {
     const { pageNumber, numPages } = this.state;
+    const titleCSS = {
+     'text-align': 'left'
+    }
     if (!this.state.userProfileInfo) {
       return null;
     }
@@ -94,14 +97,15 @@ export default class Profile extends Component {
                   <Image src={this.state.imageUrl} rounded />
                 </Col>
               <Col>
-                  <Jumbotron>{this.state.userProfileInfo.username}</Jumbotron>
+                  <Jumbotron><h1> hello {this.state.userProfileInfo.username} </h1>
+                  ...you unemployed SOB</Jumbotron>
                 </Col>
               </Row>
             </ListGroup.Item>
             <ListGroup.Item>
               <Row>
-                <Col>
-                {this.state.userProfileInfo.title}
+                <Col style={titleCSS}>
+                descriptive title:    {this.state.userProfileInfo.title}
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -125,8 +129,10 @@ export default class Profile extends Component {
               phone number: {this.state.userProfileInfo.phone}
               </Col>
               <Col>
+              first Name : {this.state.userProfileInfo.firstName}
               </Col>
               <Col>
+              last Name : {this.state.userProfileInfo.lastName}
               </Col>
               <Col>
               </Col>

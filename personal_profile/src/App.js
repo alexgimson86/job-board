@@ -10,6 +10,8 @@ import Profile from './components/profile';
 import Chat from './components/chatInput';
 import RecruiterSignup from './components/recruiterSignup';
 import AddJobs from './components/addJobs';
+import CreatePersonalInfo from  './components/createPersonalInfo';
+
 class App extends Component {
   render() {
     return (
@@ -18,7 +20,8 @@ class App extends Component {
           <Route exact path="/jobseekers/:username" component={JobSeekers} />
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/signup/:username" component={PersonalInfo}/>
+          <Route exact path="/edit/:username" component={PersonalInfo}/>
+          <Route exact path="/signup/:username" component={CreatePersonalInfo}/>
           <Route exact path="/displayResumeBig/:filename" component={DisplayResumeBig} />
           <Route exact path="/profilePage/:username" component={Profile} />
           <Route exact path="/chat" component={Chat} />

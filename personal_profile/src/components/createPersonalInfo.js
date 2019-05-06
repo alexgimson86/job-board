@@ -3,12 +3,18 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../styles/personalForm.css'
 import axios from 'axios';
 import Resume from './resumeUpload';
+import {
+    BrowserRouter as Router,
+    Redirect,
+    Route,
+} from "react-router-dom";
 
-class PersonalInfo extends Component {
+class CreatePersonalInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
             firstName: '',
+            title:'',
             lastName: '',
             phone: '',
             email: '',
@@ -17,20 +23,26 @@ class PersonalInfo extends Component {
             zip: '',
             city: '',
             personalWebsite: '',
+            studentId: '',
             country: 'US',
-            title: '',
-            recruiter: '',
-            student: '',
-            //resume:
+            loginPage: null,
+            //resume:''
 
 
         }
     }
     handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
-    }
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+    
+        this.setState({
+          [name]: value
+        });
+      }
     handleSubmit = (event) => {
-        axios.post('http://localhost:4000/student/signup',
+        event.preventDefault();
+        axios.put('http://localhost:4000/student/'+this.props.match.params.username,
             {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
@@ -41,14 +53,19 @@ class PersonalInfo extends Component {
                 zip: this.state.zip,
                 country: this.state.country,
                 personalWebsite: this.state.personalWebsite,
-                description: this.state.description,
-                title: this.state.title
+                title: this.state.title,
             })
             .then(response => {
             })
             .catch(err => {
                 console.log(err)
             });
+    }
+    returnToList =() =>{
+        this.setState({
+            loginPage: `/`
+        })
+
     }
     stateDropdown = () => {
         let state =
@@ -108,6 +125,10 @@ class PersonalInfo extends Component {
         return state;
     }
     render() {
+        if(this.state.loginPage){
+           return  <Redirect to={this.state.loginPage} />
+        }
+        
         return (
             <div className="container">
                 <div className="jumbotron">
@@ -115,37 +136,37 @@ class PersonalInfo extends Component {
                         Resume Information
                     </h2>
                 </div>
-
                 <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="nameInput">Descriptive Introduction</label>
-                        <textarea id="desc" onChange={this.handleChange} name="title" value={this.state.title} className="form-control">
-                        </textarea>
-                    </div>
-                   
+                <div className="form-group">
+                
+                <hr/>
+                <label htmlFor="nameInput">Descriptive Introduction</label>
+                       <textarea id="desc" onChange={this.handleChange} name="title" value={this.state.title} className="form-control">
+                       </textarea>
+                </div>
                     <div className="form-group">
                         <label htmlFor="nameInput">First Name</label>
-                        <input required type="text" onChange={this.handleChange} value={this.state.firstName} className="form-control" id="fName" name="firstName" placeholder="Enter First Name" />
+                        <input  type="text" onChange={this.handleChange} value={this.state.firstName} className="form-control" id="fName" name="firstName" placeholder="Enter First Name" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="lastName">Last Name</label>
-                        <input required type="text" onChange={this.handleChange} value={this.state.lastName} className="form-control" name="lastName" id="lName" placeholder="Enter Last Name" />
+                        <input  type="text" onChange={this.handleChange} value={this.state.lastName} className="form-control" name="lastName" id="lName" placeholder="Enter Last Name" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
-                        <input required type="email" onChange={this.handleChange} value={this.state.email} className="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter Email" />
+                        <input  type="email" onChange={this.handleChange} value={this.state.email} className="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter Email" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="phone">Phone Number</label>
-                        <input required type="text" onChange={this.handleChange} value={this.state.phone} className="form-control" name="phone" id="phone" aria-describedby="phone number" placeholder="Enter Phone Number" />
+                        <input  type="text" onChange={this.handleChange} value={this.state.phone} className="form-control" name="phone" id="phone" aria-describedby="phone number" placeholder="Enter Phone Number" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Address">Street Address</label>
-                        <input required type="text" onChange={this.handleChange} value={this.state.address} className="form-control" name="address" id="address" placeholder="Enter Street Address" />
+                        <input  type="text" onChange={this.handleChange} value={this.state.address} className="form-control" name="address" id="address" placeholder="Enter Street Address" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Address">City</label>
-                        <input required type="text" onChange={this.handleChange} value={this.state.city} className="form-control" name="city" id="city" placeholder="Enter Street Address" />
+                        <input  type="text" onChange={this.handleChange} value={this.state.city} className="form-control" name="city" id="city" placeholder="Enter Street Address" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="Enter Zip Code ">Zip Code</label>
@@ -156,17 +177,20 @@ class PersonalInfo extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="Personal Website">Personal Website</label>
-                        <input required type="text" onChange={this.handleChange} value={this.state.personalWebsite} className="form-control" name="personalWebsite" id="personalWebsite" placeholder="github or personal website URL" />
+                        <input  type="text" onChange={this.handleChange} value={this.state.personalWebsite} className="form-control" name="personalWebsite" id="personalWebsite" placeholder="github or personal website URL" />
                     </div>
 
                     <button type="submit" value="Submit" className="btn btn-primary">Submit</button>
                 </form>
-                <br />
-                <br />
-                <Resume studentId={this.state.studentId} />
+                <br/>
+                <br/>
+                    <Resume username={this.props.match.params.username} />
+                    <br/>
+                    <hr/>
+                    <button onClick={this.returnToList}>Done</button>
             </div>
         );
     }
 }
 
-export default PersonalInfo;
+export default CreatePersonalInfo;
