@@ -103,6 +103,12 @@ router.put('/student/login/:id', (req, res) => { });
   
     });
   });
+//add jobs to recruiters profile
+  router.put('/recruiter/addJobs/:username', (req, res) => {
+//bladsfdwf
+    res.send(200).status();
+  })
+
   router.put('/recruiter/:username', (req, res) => {
     Recruiter.findOneAndUpdate({username: req.params.username }, {
       company: req.body.companyName,
