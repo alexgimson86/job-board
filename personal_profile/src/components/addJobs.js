@@ -24,8 +24,10 @@ class RecruiterSignup extends Component {
             values[i].title = event.target.value;
         else if(event.target.name === 'description')
             values[i].description = event.target.value
-        else
+        else if(event.target.name === 'skills')
             values[i].skills = event.target.value
+            else if(event.target.name === 'date')
+            values[i].date = event.target.value
         this.setState({ values });
         
     }
@@ -35,6 +37,7 @@ class RecruiterSignup extends Component {
         title: '',
         skills:'',
         description: '',
+        date: ''
     }
     arr.push(job)
     this.setState({
@@ -42,15 +45,17 @@ class RecruiterSignup extends Component {
     })
    }
     addJob = () => {
-        
+        var date = new Date()
         var titleId = 'title#';
         var descriptionId = 'description#'
         var skillsId ='skills#'
+        var dateId = 'date#'
         return this.state.jobs.map((job , i )=>
         <li key={`job#${i}`} >
           <div><input type="text" id={`${titleId}${i}`} onChange={this.handleChange} value={job.title || ''} className="form-control"   name="title"  placeholder="Enter Job Title" />
             <input type="textarea"   id={`${descriptionId}${i}`} name="description" onChange = {this.handleChange} value = {job.description} className="form-control"  aria-describedby="job description" placeholder="Enter Job description" />
             <input type="textarea" id={`${skillsId}${i}`} name="skills" onChange ={this.handleChange} value={job.skills} className="form-control"  aria-describedby="required skills" placeholder="Enter required skills" />
+            <input type="date" id={`${dateId}${i}`} name="date" onChange ={this.handleChange}className="form-control"  aria-describedby="date" placeholder={date} />
         <br/></div>
         </li>
         )

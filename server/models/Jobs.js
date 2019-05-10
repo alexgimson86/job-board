@@ -46,9 +46,9 @@ var JobSchema = new Schema(
   salaryPeriod: {
     type: String
   },
-  recruiterId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Recruiters'
+  recruiterUsername: {
+    type: String,
+    required: false
   },
   students: {
     type: mongoose.Schema.Types.ObjectId,
