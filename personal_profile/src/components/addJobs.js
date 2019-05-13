@@ -14,6 +14,7 @@ class RecruiterSignup extends Component {
         super(props);
         this.state = {
            jobs: [],
+           loginPage: null,
         }
     }
     handleChange = (event) => {
@@ -93,15 +94,15 @@ class RecruiterSignup extends Component {
                 jobs: [...this.state.jobs]
             })
             .then(response => {
-
+               
             })
             .catch(err => {
                 console.log(err)
             });
     }
-    returnToList = () => {
+    returnToLogin = () => {
         this.setState({
-            listPage: `/jobseekers/${this.props.match.params.username}`
+            loginPage: '/'
         })
 
     }
@@ -111,8 +112,8 @@ class RecruiterSignup extends Component {
             'float': 'left'
         }
 
-        if (this.state.listPage) {
-            return <Redirect to={this.state.listPage} />
+        if (this.state.loginPage) {
+            return <Redirect to={this.state.loginPage} />
         }
 
         return (
@@ -139,14 +140,10 @@ class RecruiterSignup extends Component {
                     </Button>
                  </form>
                 </div>
-
-
-                <br />
-                <br />
-                <Resume username={this.props.match.params.username} />
-                <br />
-                <hr />
-                <Button variant="success" onClick={this.returnToList}>Done</Button>
+                <br/>
+                <br/>
+                <hr/>
+                <Button variant="success" onClick={this.returnToLogin}>Done</Button>
             </div>
         );
     }
