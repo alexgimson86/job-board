@@ -106,7 +106,16 @@ router.put('/student/login/:id', (req, res) => { });
 //add jobs to recruiters profile
   router.put('/recruiter/addJobs/:username', (req, res) => {
 //bladsfdwf
+    var jobArray = req.body.jobs 
+    req.body.jobs.forEach((job, i)=>{
+      var j = new Job(job)
+      j.recruiterUsername = req.params.username
+      j.save(err=>{
+        if(err) res.send(err)
+      })
+    })
     res.send(200).status();
+
   })
 
   router.put('/recruiter/:username', (req, res) => {
