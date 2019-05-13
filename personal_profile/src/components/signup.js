@@ -21,6 +21,7 @@ class Signup extends Component {
             recruiterFormRedirect: null,
             student: false,
             recruiter: false,
+            loginPage: null,
         }
     }
     handleChange = (event) => {
@@ -96,6 +97,11 @@ class Signup extends Component {
             alert('passwords must match')
         }
     }
+    goBack = () => {
+        this.setState({
+            loginPage: '/'
+        })
+    }
     render() {
         if (this.state.formRedirect) {
             return <Redirect to={{ pathname: this.state.formRedirect }} />
@@ -105,6 +111,9 @@ class Signup extends Component {
         }
         else if (this.state.recruiterFormRedirect) {
             return <Redirect to={{ pathname: this.state.recruiterFormRedirect }} />
+        }
+        else if (this.state.loginPage) {
+            return <Redirect to={{ pathname: this.state.loginPage }} />
         }
         else {
             return (
@@ -153,6 +162,9 @@ class Signup extends Component {
 
                             <Button variant="primary" type="submit" onClick={this.handleClick}>
                                 Submit
+                        </Button>
+                        <Button variant="secondary" type="button" onClick={this.goBack}>
+                                Back
                         </Button>
                         </Form>
                     </Container>
