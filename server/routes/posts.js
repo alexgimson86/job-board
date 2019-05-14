@@ -101,7 +101,7 @@ router.post('/student/signup', (req, res) => {
     }
   });
   //login with local strategy
-  router.post('/student/login', 
+  router.post('/login', 
     passport.authenticate('local', { failureRedirect: '/loginFailed' }),
     function(req, res) {
       req.session.user = req.user

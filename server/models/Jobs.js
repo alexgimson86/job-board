@@ -40,7 +40,7 @@ var JobSchema = new Schema(
     type: Boolean
   },
   salary: {
-    type: Number,
+    type: String,
     required: true
   },
   salaryPeriod: {

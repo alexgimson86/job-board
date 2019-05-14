@@ -27,7 +27,7 @@ class Login extends Component {
         e.preventDefault();
         axios({
             method:'post',
-            url: 'http://localhost:4000/student/login',
+            url: 'http://localhost:4000/login',
             data: {
                 password: this.state.password,
                 username: this.state.username,

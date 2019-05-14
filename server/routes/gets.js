@@ -128,6 +128,7 @@ router.get('/instructor/:instructor_id', (req, res) => {
 
 router.get('/student', isAuthenticated,
     (req, res) => {
+        if(req.user.recruiter){
         console.log(req.user);
         Student.find((err, students) => {
             if (err)
@@ -135,6 +136,10 @@ router.get('/student', isAuthenticated,
 
             res.json(students);
         })
+    }
+    else{
+        res.redirect('/recruiter')
+    }
     });
 router.get('/logout', (req, res) => {
     req.logout();
