@@ -29,9 +29,21 @@ class Signup extends Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
+
         this.setState({
             [name]: value
         });
+        if(name === 'student'){
+            this.setState({
+                recruiter: false
+            })
+        }
+        else if(name === 'recruiter'){
+            this.setState({
+                student: false
+            })
+        }
+       
     }
 
     handleClick = (e) => {
@@ -156,7 +168,7 @@ class Signup extends Component {
                                 <input
                                     name="recruiter"
                                     type="checkbox"
-                                    value={this.state.recruiter}
+                                    checked={this.state.recruiter}
                                     onChange={this.handleChange} />
                             </label><hr />
 
