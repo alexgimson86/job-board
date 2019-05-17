@@ -45,7 +45,11 @@ var RecruiterSchema = new Schema(
     jobsPosted: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Jobs'
-    },    
+    },  
+    phone: {
+      type: String,
+      required: false
+    },
     url: {
       type: String,
       required: false

@@ -120,11 +120,14 @@ router.put('/student/login/:id', (req, res) => { });
 
   router.put('/recruiter/:username', (req, res) => {
     Recruiter.findOneAndUpdate({username: req.params.username }, {
-      company: req.body.companyName,
+      companyName: req.body.companyName,
       firstName: req.body.firstName,
       lastName:req.body.lastName,
       email: req.body.email,
       url: req.body.companyWebsite,
+      title: req.body.title,
+      phone: req.body.phone
+      
     },(err,user)=> {
       // updating recruiter info
       // save info

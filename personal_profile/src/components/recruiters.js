@@ -4,7 +4,7 @@ import '../styles/personalForm.css'
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import { Table, Button, Container, ButtonToolbar, Tabs, Tab, Nav, Row, Col } from 'react-bootstrap'
-import StudentComponent from './studentComponent';
+import RecruiterComponent from './recruiterComponent';
 import Profile from './profile';
 export default class RecruiterList extends Component {
     constructor(props) {
@@ -36,8 +36,8 @@ export default class RecruiterList extends Component {
             display: !toDisplay,
         })
     }
-    studentList = (student) => {
-        return <StudentComponent key={student._id} studentInfo={student} />
+    studentList = (recruiter) => {
+        return <RecruiterComponent key={recruiter._id} recruiterInfo={recruiter} />
     }
 
     goToProfile = () => {
@@ -54,7 +54,7 @@ export default class RecruiterList extends Component {
         })
     }
     componentDidMount() {
-        axios.get('http://localhost:4000/student',
+        axios.get('http://localhost:4000/recruiter',
             { withCredentials: true }
         ).then(results => {
             let otherUsersList = [];
@@ -87,7 +87,7 @@ export default class RecruiterList extends Component {
             return <Redirect to={{ pathname: this.state.redirectToProfile, state: { myId: this.state.myInfo.key } }} />
         }
         else if(this.state.redirectToChat){
-            return <Redirect to={{pathname: this.state.redirectToChat}} />
+            return <Redirect to={{pathname: this.state.redirectToChat,state:  {isRecruiter: true } }} />
         }
         else {
             return (
@@ -112,13 +112,12 @@ export default class RecruiterList extends Component {
                         <Table hover responsive>
                             <thead>
                                 <tr>
-                                    <th>Image</th>
                                     <th>Name</th>
                                     <th>Introduction</th>
                                     <th>More Details</th>
                                 </tr>
                             </thead>
-                           
+                            {this.state.mappedList ? this.state.mappedList : ""}
                         </Table>
                     </Container>
                 </Container>
