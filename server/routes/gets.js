@@ -60,11 +60,17 @@ router.get('/resume/:student_id', (req, res) => {
     })
 });
 router.get('/recruiter', (req, res) => {
-    Recruiter.find((err, recruiters) => {
-        if (err)
-            res.send(err);
-        res.json(recruiters);
-    });
+    var myStudentInfo = []
+    Student.find({username: req.user.username }, (err, student)=>{
+        myStudentInfo.push(student)
+        Recruiter.find((err, recruiters) => {
+            if (err){
+                res.send(err);
+            }
+            var userAndRecruiters = myStudentInfo.concat(recruiters)
+            res.json(userAndRecruiters);
+        });
+    })
 });
 
 // /////////////////
@@ -78,6 +84,7 @@ router.get('/job', (req, res) => {
 
 // get the recruiter with that id (accessed at GET http://localhost:3001/recruiter/:recruiter_id)
 router.get('/recruiter/:recruiter_id', (req, res) => {
+
     Recruiter.findById(req.params.recruiter_id, (err, recruiter) => {
         if (err)
             res.send(err);

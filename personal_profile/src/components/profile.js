@@ -57,7 +57,7 @@ export default class Profile extends Component {
     })
   }
   goBackToList = () => {
-    var backLink = `/jobseekers/${this.state.userProfileInfo.username}`
+    var backLink = `/recruiters/${this.state.userProfileInfo.username}`
     this.setState({
       previousPage: backLink
     })

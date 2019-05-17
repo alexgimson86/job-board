@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Container, Jumbotron, Row, Col, Nav} from 'react-bootstrap'
+import { Form, Button, Container, Jumbotron, Row, Col, Nav } from 'react-bootstrap'
 import axios from 'axios'
 import {
     BrowserRouter as Router,
@@ -26,26 +26,38 @@ class Login extends Component {
     handleClick = (e) => {
         e.preventDefault();
         axios({
-            method:'post',
+            method: 'post',
             url: 'http://localhost:4000/login',
             data: {
                 password: this.state.password,
                 username: this.state.username,
 
-            }, 
+            },
             withCredentials: true,
         }).then(response => {
             //document.cookie = `id=${response.data._id} path=/jobseekers/${response.data.username}`
-                if(response.status === 200){
+            if (response.data.recruiter) {
+                if (response.status === 200) {
                     var link = `/jobseekers/${response.data.username}`
                     this.setState({
                         redirect: link,
                         userInfo: response.data
                     })
-                    sessionStorage.setItem("myCurrentUsername", response.data.username);
-                    // Retrieve    
+                }
             }
-            })
+            else if (response.data.student) {
+                if (response.status === 200) {
+                    var link2 = `/recruiters/${response.data.username}`
+                    this.setState({
+                        redirect: link2,
+                        userInfo: response.data
+                    })
+                }
+            }
+            sessionStorage.setItem("myCurrentUsername", response.data.username);
+            // Retrieve    
+
+        })
             .catch(err => {
                 alert("error bad login data")
                 console.log(err)
@@ -54,26 +66,26 @@ class Login extends Component {
     goToSignup = () => {
         var toLogin = null;
         toLogin = "/signup"
-        this.setState(()=>{
-          return  {loginRedirect: "/signup" }
+        this.setState(() => {
+            return { loginRedirect: "/signup" }
         })
-        return <Redirect to={toLogin } />
+        return <Redirect to={toLogin} />
     }
     render() {
-        if(this.state.loginRedirect){
-            return <Redirect to={{ pathname: this.state.loginRedirect}} />
+        if (this.state.loginRedirect) {
+            return <Redirect to={{ pathname: this.state.loginRedirect }} />
         }
         else if (this.state.redirect) {
-            return <Redirect to={{ pathname: this.state.redirect}} />
+            return <Redirect to={{ pathname: this.state.redirect }} />
         }
         else {
             return (
                 <Container>
-                <Row>
-                    <Nav.Link className="justify-content-start" onClick={this.goToSignup}>
-                        SIGN UP
+                    <Row>
+                        <Nav.Link className="justify-content-start" onClick={this.goToSignup}>
+                            SIGN UP
                     </Nav.Link>
-                </Row>
+                    </Row>
                     <br /> <br />
                     <Jumbotron>LOGIN PAGE</Jumbotron>
                     <Container>
