@@ -86,7 +86,7 @@ class Chat extends Component {
     goBack = () => {
         var un = sessionStorage.getItem('myCurrentUsername')
         var link;
-        if(this.props.location.state.isRecruiter) 
+        if(!this.props.location.state.isRecruiter) 
             link = `recruiters/${un}`
         else
             link = `jobseekers/${un}`

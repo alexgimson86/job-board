@@ -83,7 +83,7 @@ export default class JobSeekers extends Component {
             return <Redirect to={{ pathname: this.state.redirectToProfile, state: { myId: this.state.myInfo.key } }} />
         }
         else if(this.state.redirectToChat){
-            return <Redirect to={{pathname: this.state.redirectToChat}} />
+            return <Redirect to={{ pathname: this.state.redirectToChat, state: { isRecruiter: true }}} />
         }
         else {
             return (
