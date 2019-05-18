@@ -132,7 +132,14 @@ router.get('/instructor/:instructor_id', (req, res) => {
         res.json(instructor);
     });
 });
-
+router.get('/checkForLogin', (req, res) => {
+    if(req.user){
+        res.send(true)
+    }
+    else{
+        res.send(false)
+    }
+})
 router.get('/student', isAuthenticated,
     (req, res) => {
         if(req.user.recruiter){

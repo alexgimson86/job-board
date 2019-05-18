@@ -100,10 +100,26 @@ class RecruiterSignup extends Component {
                 console.log(err)
             });
     }
-    returnToLogin = () => {
-        this.setState({
-            loginPage: '/'
+    returnToLoginOrList = () => {
+        axios.get('http://localhost:4000/checkForLogin',{withCredentials:true})
+        .then(response => {
+            if(!response.data){
+                this.setState({
+                    loginPage: '/'
+                })
+            }
+            else{
+                let un = sessionStorage.getItem("myCurrentUsername")
+                this.setState({
+                    loginPage: `/jobSeekers/${un}`
+                })
+            }
+           
         })
+        .catch(err => {
+            console.log(err)
+        });
+        
 
     }
 
@@ -143,7 +159,7 @@ class RecruiterSignup extends Component {
                 <br/>
                 <br/>
                 <hr/>
-                <Button variant="success" onClick={this.returnToLogin}>Done</Button>
+                <Button variant="success" onClick={this.returnToLoginOrList}>Done</Button>
             </div>
         );
     }

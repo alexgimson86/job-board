@@ -16,9 +16,8 @@ export default class JobSeekers extends Component {
             username: null,
             myInfo: null,
             redirectToProfile: null,
-            redirectToChat: null
-
-
+            redirectToChat: null,
+            addJobsPage: null,
         }
     }
     handleLogout = () => {
@@ -53,6 +52,14 @@ export default class JobSeekers extends Component {
             redirectToChat: link
         })
     }
+    goToAddJobs = () => {
+        let myUsername = sessionStorage.getItem("myCurrentUsername");
+        let link = `/addJobs/${myUsername}`
+        this.setState({
+            addJobsPage: link
+        })
+
+    }
     componentDidMount() {
         axios.get('http://localhost:4000/student',
             { withCredentials: true }
@@ -79,6 +86,9 @@ export default class JobSeekers extends Component {
         if (this.state.redirect) {
             return <Redirect to={{ pathname: this.state.redirect }} />
         }
+        else if (this.state.addJobsPage) {
+            return <Redirect to={{ pathname: this.state.addJobsPage }} />
+        }
         else if (this.state.redirectToProfile) {
             return <Redirect to={{ pathname: this.state.redirectToProfile, state: { myId: this.state.myInfo.key } }} />
         }
@@ -100,6 +110,10 @@ export default class JobSeekers extends Component {
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link className="justify-content-end" onClick={this.goToProfile} eventKey="link-1">                    {this.props.match.params.username}
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link className="justify-content-end" onClick={this.goToAddJobs} eventKey="link-1">                    add jobs
                             </Nav.Link>
                         </Nav.Item>
                     </Nav>

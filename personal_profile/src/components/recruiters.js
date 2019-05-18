@@ -16,8 +16,8 @@ export default class RecruiterList extends Component {
             username: null,
             myInfo: null,
             redirectToProfile: null,
-            redirectToChat: null
-
+            redirectToChat: null,
+            addJobsPage: null,
 
         }
     }
@@ -53,6 +53,7 @@ export default class RecruiterList extends Component {
             redirectToChat: link
         })
     }
+    
     componentDidMount() {
         axios.get('http://localhost:4000/recruiter',
             { withCredentials: true }
@@ -83,6 +84,7 @@ export default class RecruiterList extends Component {
         if (this.state.redirect) {
             return <Redirect to={{ pathname: this.state.redirect }} />
         }
+       
         else if (this.state.redirectToProfile) {
             return <Redirect to={{ pathname: this.state.redirectToProfile, state: { myId: this.state.myInfo.key } }} />
         }
@@ -106,6 +108,7 @@ export default class RecruiterList extends Component {
                             <Nav.Link className="justify-content-end" onClick={this.goToProfile} eventKey="link-1">                    {this.props.match.params.username}
                             </Nav.Link>
                         </Nav.Item>
+                        
                     </Nav>
                     <br />
                     <Container>
