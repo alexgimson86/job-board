@@ -74,8 +74,8 @@ router.get('/recruiter', (req, res) => {
 });
 
 // /////////////////
-router.get('/job', (req, res) => {
-    Job.find((err, jobs) => {
+router.get('/job/:username', (req, res) => {
+    Job.find({recruiterUsername: req.params.username },(err, jobs) => {
         if (err)
             res.send(err);
         res.json(jobs);

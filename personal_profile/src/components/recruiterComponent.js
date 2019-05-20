@@ -12,17 +12,11 @@ export default class RecruiterComponent extends Component {
         super(props);
         this.state = {
             recruiterData: null,
-            display: false,
+            jobPage: null,
 
         }
     }
-    handleClick = () => {
-        this.setState(state => {
-            return { display: !state.display }
-        })
-
-
-    }
+   
     constructStudent = (recruiter) => {
         let URL = `/recruiterModule/${recruiter._id}`
         var words = null
@@ -39,15 +33,15 @@ export default class RecruiterComponent extends Component {
             else 
              modString = recruiter.title
         }
-        let link = `jobsList/${recruiter.username}`
+        let link = `/jobList/${recruiter.username}`
+       
         return (
-
             <tr key={recruiter._id}>
                 <td key="fNameLname">{recruiter.firstName}{'  '}{recruiter.lastName}</td>
                 <td key="title">{modString}
                 </td>
                 <td>
-                    <Link to={link} onClick={this.handleClick}>
+                    <Link to={link}>
                         click here to see jobs
                 </Link>
                 </td>
@@ -62,12 +56,10 @@ export default class RecruiterComponent extends Component {
     }
     render() {
         return (
-                <Router>
                         <tbody>
                             {this.state.recruiterData ? this.state.recruiterData : ""}
                         </tbody>
-                        <Route exact path='/recruiterModule/:id' render={() => <ModalFunc studentInfo={this.props.recruiterInfo} display={this.state.display} handleClick={this.handleClick} />}/>
-                </Router>
+                       
 
         )
     }
