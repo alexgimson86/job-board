@@ -41,7 +41,7 @@ export default class JobSeekers extends Component {
 
     goToProfile = () => {
         let myUsername = sessionStorage.getItem("myCurrentUsername");
-        let link = `/profilePage/${myUsername}`;
+        let link = `/recruiterProfilePage/${myUsername}`;
         this.setState({
             redirectToProfile: link
         })

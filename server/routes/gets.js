@@ -83,9 +83,9 @@ router.get('/job', (req, res) => {
 });
 
 // get the recruiter with that id (accessed at GET http://localhost:3001/recruiter/:recruiter_id)
-router.get('/recruiter/:recruiter_id', (req, res) => {
+router.get('/recruiter/:username', (req, res) => {
 
-    Recruiter.findById(req.params.recruiter_id, (err, recruiter) => {
+    Recruiter.find({ username:req.params.username } , (err, recruiter) => {
         if (err)
             res.send(err);
         res.json(recruiter);

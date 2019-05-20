@@ -12,6 +12,8 @@ import RecruiterSignup from './components/recruiterSignup';
 import AddJobs from './components/addJobs';
 import CreatePersonalInfo from  './components/createPersonalInfo';
 import RecruiterList from './components/recruiters';
+import RecruiterProfile from './components/recruiterProfile';
+
 class App extends Component {
   render() {
     return (
@@ -28,6 +30,7 @@ class App extends Component {
           <Route exact path="/recruiterSignup/:username" component={RecruiterSignup} />
           <Route exact path="/recruiters/:username" component={RecruiterList}/>
           <Route exact path="/addJobs/:username" component={AddJobs} />
+          <Route exact path="/recruiterProfilePage/:username" component={RecruiterProfile}/>
         </Router>
       </div>
     );
