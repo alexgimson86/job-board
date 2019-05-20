@@ -63,7 +63,7 @@ class PersonalInfo extends Component {
     }
     returnToList =() =>{
         this.setState({
-            listPage: `/jobseekers/${this.props.match.params.username}`
+            listPage: `/recruiters/${this.props.match.params.username}`
         })
 
     }

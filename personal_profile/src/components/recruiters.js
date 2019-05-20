@@ -97,11 +97,11 @@ export default class RecruiterList extends Component {
                     <Nav>
                         <Nav.Item>
                             <Nav.Link className="justify-content-start" onClick={this.handleLogout}>
-                                LOG OUT
+                                log out
                             </Nav.Link>     
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link className="justify-content-end" onClick={this.goToChat} eventKey="link-1">                  Chat Board
+                            <Nav.Link className="justify-content-end" onClick={this.goToChat} eventKey="link-1">                  chat board
                             </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
@@ -115,9 +115,9 @@ export default class RecruiterList extends Component {
                         <Table hover responsive>
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Introduction</th>
-                                    <th>More Details</th>
+                                    <th>name</th>
+                                    <th>introduction</th>
+                                    <th>more details</th>
                                 </tr>
                             </thead>
                             {this.state.mappedList ? this.state.mappedList : ""}

@@ -16,6 +16,7 @@ class RecruiterSignup extends Component {
             firstName: '',
             title: '',
             lastName: '',
+            isLoggedIn: false,
             phone: '',
             email: '',
             state: 'TX',
@@ -36,12 +37,12 @@ class RecruiterSignup extends Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-        
+
         this.setState({
             [name]: value
         });
     }
-    
+
     handleSubmit = (event) => {
         event.preventDefault();
         axios.put('http://localhost:4000/recruiter/' + this.props.match.params.username,
@@ -57,16 +58,27 @@ class RecruiterSignup extends Component {
                 companyWebsite: this.state.companyWebsite,
             })
             .then(response => {
+                
             })
             .catch(err => {
                 console.log(err)
             });
     }
     addJobs = () => {
-        this.setState({
-            addJobsPage: `/addJobs/${this.props.match.params.username}`
+        axios.get('http://localhost:4000/checkForLogin', { withCredentials: true }).then(response => {
+                  
+            
+            if (response.data) {
+                this.setState({
+                    addJobsPage: `/jobSeekers/${this.props.match.params.username}`
+                })
+            } else {
+                this.setState({
+                    addJobsPage: `/addJobs/${this.props.match.params.username}`
+                })
+            }
+            
         })
-
     }
     render() {
         if (this.state.addJobsPage) {
@@ -108,12 +120,12 @@ class RecruiterSignup extends Component {
                         <label htmlFor="Company">Company Name</label>
                         <input type="text" onChange={this.handleChange} value={this.state.company} className="form-control" name="companyName" id="companyName" placeholder="Enter Company name" />
                     </div>
-                    
+
                     <div className="form-group">
                         <label htmlFor="Company Website">Company Website</label>
                         <input type="text" onChange={this.handleChange} value={this.state.companyWebsite} className="form-control" name="companyWebsite" id="companyWebsite" placeholder="company website URL" />
                     </div>
-                    
+
                     <button type="submit" value="Submit" className="btn btn-primary">Submit</button>
                 </form>
                 <br />

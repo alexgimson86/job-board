@@ -1,7 +1,7 @@
 // student update account form PUT ---------------------------------------------------
 // be sure to set values in Postman if testing with Postman under the Body tab below the url path bar
 var express = require('express')
-    , router = express.Router()
+  , router = express.Router()
 require('../server')
 var mongoose = require('../dbConnection.js')
 const RecruiterSchema = require('../models/Recruiters');
@@ -9,7 +9,7 @@ const JobSchema = require('../models/Jobs');
 const StudentSchema = require('../models/Students');
 const InstructorSchema = require('../models/Instructors');
 const ResumeSchema = require('../models/Resumes');
-const UserSchema = require('../models/Users') 
+const UserSchema = require('../models/Users')
 
 const ObjectID = require('mongodb').ObjectID;
 const Recruiter = mongoose.model('Recruiter', RecruiterSchema);
@@ -20,120 +20,124 @@ const Resume = mongoose.model('Resume', ResumeSchema);
 const User = mongoose.model('User', UserSchema);
 
 router.put('/student/:student_username', (req, res) => {
-    //save user username for this session
-    //req.session.student_username = req.params.student_username;
-    Student.findOne( { "username" : req.params.student_username }, (err, student) => {
-  
-      // updating student info
-      if (req.body.firstName) student.firstName = req.body.firstName;
-      if (req.body.lastName) student.lastName = req.body.lastName;
-      if (req.body.email) student.email = req.body.email;
-      if (req.body.password) student.password = req.body.password;
-      if (req.body.savedJobs) student.savedJobs = req.body.savedJobs;
-      if (req.body.fieldOfStudy) student.fieldOfStudy = req.body.fieldOfStudy;
-      if (req.body.skills) student.skills = req.body.skills;
-      if (req.body.phone) student.phone = req.body.phone;
-      if (req.body.street) student.address.street = req.body.street;
-      if (req.body.zip) student.address.zip = req.body.zip;
-      if (req.body.state) student.address.state = req.body.state;
-      if (req.body.title) student.title = req.body.title;
-  
-      // save info
-      student.save((err) => {
-        if (err)
-          res.send(err);
-        
-        res.json({ message: 'Student account information updated.' });
-      });
-  
+  //save user username for this session
+  //req.session.student_username = req.params.student_username;
+  Student.findOne({ "username": req.params.student_username }, (err, student) => {
+
+    // updating student info
+    if (req.body.firstName) student.firstName = req.body.firstName;
+    if (req.body.lastName) student.lastName = req.body.lastName;
+    if (req.body.email) student.email = req.body.email;
+    if (req.body.password) student.password = req.body.password;
+    if (req.body.savedJobs) student.savedJobs = req.body.savedJobs;
+    if (req.body.fieldOfStudy) student.fieldOfStudy = req.body.fieldOfStudy;
+    if (req.body.skills) student.skills = req.body.skills;
+    if (req.body.phone) student.phone = req.body.phone;
+    if (req.body.street) student.address.street = req.body.street;
+    if (req.body.zip) student.address.zip = req.body.zip;
+    if (req.body.state) student.address.state = req.body.state;
+    if (req.body.title) student.title = req.body.title;
+
+    // save info
+    student.save((err) => {
+      if (err)
+        res.send(err);
+
+      res.json({ message: 'Student account information updated.' });
     });
+
   });
-  router.put('/resume/:resume_id', (req, res) => {
-    console.log('in /resume/:resume_id, req.body sent is : ', req.body);
-    Resume.findByIdAndUpdate(
-      req.params.resume_id,
-      req.body,
-      { new: true },
-      (err, resume) => {
-        if (err) return res.status(500).send(err);
-        return res.send(resume);
-      }
-    )
-  });
-  router.put('/job/:job_id', (req, res) => {
-    Job.findById(req.params.job_id, (err, job) => {
-  
-      // updating student info
-      job.jobTitle = req.body.jobTitle;
-      job.jobDescription = req.body.jobDescription;
-      job.skills = req.body.skills;
-      job.location = req.body.location;
-      job.url = req.body.url;
-  
-      // save info
-      job.save((err) => {
-        if (err)
-          res.send(err);
-  
-        res.json({ message: 'Job information updated.' });
-      });
-  
+});
+router.put('/resume/:resume_id', (req, res) => {
+  console.log('in /resume/:resume_id, req.body sent is : ', req.body);
+  Resume.findByIdAndUpdate(
+    req.params.resume_id,
+    req.body,
+    { new: true },
+    (err, resume) => {
+      if (err) return res.status(500).send(err);
+      return res.send(resume);
+    }
+  )
+});
+router.put('/job/:job_id', (req, res) => {
+  Job.findById(req.params.job_id, (err, job) => {
+
+    // updating student info
+    job.jobTitle = req.body.jobTitle;
+    job.jobDescription = req.body.jobDescription;
+    job.skills = req.body.skills;
+    job.location = req.body.location;
+    job.url = req.body.url;
+
+    // save info
+    job.save((err) => {
+      if (err)
+        res.send(err);
+
+      res.json({ message: 'Job information updated.' });
     });
+
   });
+});
 router.put('/student/login/:id', (req, res) => { });
 
-  router.put('/instructor/:instructor_id', (req, res) => {
-    Instructor.findById(req.params.instructor_id, (err, instructor) => {
-  
-      // updating instructor info
-      instructor.institution = req.body.institution;
-      instructor.firstName = req.body.firstName;
-      instructor.lastName = req.body.lastName;
-      instructor.email = req.body.email;
-      instructor.password = req.body.password;
-      instructor.academicFields = req.body.academicFields;
-  
-      // save info
-      instructor.save((err) => {
-        if (err)
-          res.send(err);
-  
-        res.json({ message: 'Instructor account information updated.' });
-      });
-  
+router.put('/instructor/:instructor_id', (req, res) => {
+  Instructor.findById(req.params.instructor_id, (err, instructor) => {
+
+    // updating instructor info
+
+    instructor.institution = req.body.institution;
+    instructor.firstName = req.body.firstName;
+    instructor.lastName = req.body.lastName;
+    instructor.email = req.body.email;
+    instructor.password = req.body.password;
+    instructor.academicFields = req.body.academicFields;
+
+    // save info
+    instructor.save((err) => {
+      if (err)
+        res.send(err);
+
+      res.json({ message: 'Instructor account information updated.' });
     });
+
   });
+});
 //add jobs to recruiters profile
-  router.put('/recruiter/addJobs/:username', (req, res) => {
-//bladsfdwf
-    var jobArray = req.body.jobs 
-    req.body.jobs.forEach((job, i)=>{
-      var j = new Job(job)
-      j.recruiterUsername = req.params.username
-      j.save(err=>{
-        if(err) res.send(err)
-      })
+router.put('/recruiter/addJobs/:username', (req, res) => {
+  //bladsfdwf
+  var jobArray = req.body.jobs
+  req.body.jobs.forEach((job, i) => {
+    var j = new Job(job)
+    j.recruiterUsername = req.params.username
+    j.save(err => {
+      if (err) res.send(err)
     })
-    res.send(200).status();
-
   })
+  res.send(200).status();
 
-  router.put('/recruiter/:username', (req, res) => {
-    Recruiter.findOneAndUpdate({username: req.params.username }, {
-      companyName: req.body.companyName,
-      firstName: req.body.firstName,
-      lastName:req.body.lastName,
-      email: req.body.email,
-      url: req.body.companyWebsite,
-      title: req.body.title,
-      phone: req.body.phone
-      
-    },(err,user)=> {
-      // updating recruiter info
-      // save info
+})
+
+router.put('/recruiter/:username', (req, res) => {
+  Recruiter.findOne({ username: req.params.username }, (err, recruiter) => {
+    if (req.body.companyName) recruiter.companyName = req.body.companyName;
+    if (req.body.firstName) recruiter.firstName = req.body.firstName;
+    if (req.body.lastName) recruiter.lastName = req.body.lastName;
+    if (req.body.email) recruiter.email = req.body.email;
+    if (req.body.companyWebsite) recruiter.url = req.body.companyWebsite;
+    if (req.body.title) recruiter.title = req.body.title;
+    if (req.body.phone) recruiter.phone = req.body.phone
+
+    recruiter.save((err) => {
+      if (err)
+        res.send(err);
       res.json({ message: 'Recruiter account information updated.' });
-  
     });
-  });
+    // updating recruiter info
+    // save info
 
-  module.exports = router
+  });
+});
+
+module.exports = router
