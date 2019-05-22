@@ -25,8 +25,11 @@ export default class JobList extends Component {
     componentDidMount() {
         axios.get('http://localhost:4000/job/' + this.props.match.params.username).then(results => {
             let list = results.data.map(job => {
+                var buttonStyle = {
+                    'float': 'left'
+                }
                 return (
-                    <ListGroup.Item>
+                    <ListGroup.Item key={job.id}>
                         <Row> 
                             <Col><strong>job title: </strong>{job.title}</Col><Col><strong>job description: </strong> {job.jobDescription}</Col><Col><strong>location: </strong>{job.location}</Col>
                         </Row>
@@ -46,13 +49,16 @@ export default class JobList extends Component {
 
     }
     render() {
+        var buttonStyle = {
+            'float': 'left'
+        }
         if(this.state.back){
             return <Redirect to={this.state.back} />
         }
         else{
         return (
             <Container>
-                <Button onClick={this.goBack}>
+                <Button style={buttonStyle} onClick={this.goBack}>
                     back
                 </Button>
                 <Jumbotron>

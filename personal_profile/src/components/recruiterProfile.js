@@ -18,7 +18,11 @@ export default class RecruiterProfile extends Component {
             pageNumber: 1,
             previousPage: null,
             editPage: null,
+            jobs: null,
         }
+    }
+    editJob=(event) =>{
+        alert(event.target.id)
     }
     componentDidMount() {
         let myId = this.props.match.params.username
@@ -29,6 +33,26 @@ export default class RecruiterProfile extends Component {
         }).then(response => {
             this.setState({
                 recruiter: response.data[0]
+            })
+            axios({
+                method: 'get',
+                url: 'http://localhost:4000/job/' + myId,
+                withCredentials: true,
+            }).then( response=> {
+               let jobList =  response.data.map( job =>{
+                   var buttonKey = `edit#${job._id}`
+                return(
+                    <tr key={job._id}>
+                        <Button onClick={this.editJob} id={buttonKey}>edit</Button>
+                        <td>{job.title}</td>
+                        <td>{job.jobDescription}</td>
+                        <td>{job.skills}</td>
+                        <td>{job.salary}</td>
+                        <td>{job.location}</td>
+                        <td>{job.url}</td>
+                    </tr>
+                )})
+                this.setState({jobs: jobList})
             })
         }).catch(err => {
             console.log(err);
@@ -113,7 +137,37 @@ export default class RecruiterProfile extends Component {
                             </Row>
                         </ListGroup.Item>
                     </ListGroup>
+                    <h2>job list</h2>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>
 
+                                </th>
+                                <th>
+                                    job title
+                                </th>
+                                <th>
+                                    job description
+                                </th>
+                                <th>
+                                    required skills
+                                </th>
+                                <th>
+                                    salary
+                                </th>
+                                <th>
+                                    location
+                                </th>
+                                <th>
+                                    company website
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.jobs ? this.state.jobs : ' no jobs to display ' }
+                        </tbody>
+                    </Table>
                 </Container>
             );
     }
