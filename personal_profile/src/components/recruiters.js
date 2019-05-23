@@ -18,6 +18,8 @@ export default class RecruiterList extends Component {
             redirectToProfile: null,
             redirectToChat: null,
             addJobsPage: null,
+            redirectToSearch: null,
+            searchString: "",
 
         }
     }
@@ -53,7 +55,14 @@ export default class RecruiterList extends Component {
             redirectToChat: link
         })
     }
-    
+    goToSearch = () =>{
+        var search = document.getElementById('searchBar').value;
+
+        this.setState({
+            searchString: search,
+            redirectToSearch: '/searchJobs',
+        }) 
+    }
     componentDidMount() {
         axios.get('http://localhost:4000/recruiter',
             { withCredentials: true }
@@ -84,6 +93,9 @@ export default class RecruiterList extends Component {
         if (this.state.redirect) {
             return <Redirect to={{ pathname: this.state.redirect }} />
         }
+        else if (this.state.redirectToSearch) {
+            return <Redirect to={{ pathname: this.state.redirectToSearch, state:this.state.searchString }} />
+        }
        
         else if (this.state.redirectToProfile) {
             return <Redirect to={{ pathname: this.state.redirectToProfile, state: { myId: this.state.myInfo.key } }} />
@@ -92,6 +104,9 @@ export default class RecruiterList extends Component {
             return <Redirect to={{ pathname: this.state.redirectToChat, state: { isRecruiter: false } }} />
         }
         else {
+            let searchCSS = {
+                float: 'right',
+            }
             return (
                 <Container>
                     <Nav>
@@ -108,8 +123,17 @@ export default class RecruiterList extends Component {
                             <Nav.Link className="justify-content-end" onClick={this.goToProfile} eventKey="link-1">                    {this.props.match.params.username}
                             </Nav.Link>
                         </Nav.Item>
+                        <br></br>
                         
                     </Nav>
+                    <div >
+                        <span style={searchCSS}>
+                        search by title{"   "}
+                        <input   id="searchBar" type="text" placeholder="Search by title.."/>{' '}
+                        <Button onClick={this.goToSearch}>go</Button>
+                        </span>
+                        <br/>
+                    </div>
                     <br />
                     <Container>
                         <Table hover responsive>
