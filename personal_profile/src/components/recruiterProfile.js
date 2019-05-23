@@ -19,10 +19,40 @@ export default class RecruiterProfile extends Component {
             previousPage: null,
             editPage: null,
             jobs: null,
+            editJob: null,
         }
     }
-    editJob=(event) =>{
-        alert(event.target.id)
+    deleteJob=(event) =>{
+        //alert(event.target.id)
+        var newId = event.target.id.split('#')[1]
+        let myId = this.props.match.params.username
+        axios({
+            method: 'delete',
+            url: 'http://localhost:4000/job/' + newId,
+            withCredentials: true,
+        }).then(response => {
+            axios({
+                method: 'get',
+                url: 'http://localhost:4000/job/' + myId,
+                withCredentials: true,
+            }).then( response=> {
+               let jobList =  response.data.map( job =>{
+                   var buttonKey = `edit#${job._id}`
+                return(
+                    <tr name={job._id} key={job._id}>
+                        <Button onClick={this.deleteJob} id={buttonKey}>delete</Button>
+                        <td>{job.title}</td>
+                        <td>{job.jobDescription}</td>
+                        <td>{job.skills}</td>
+                        <td>{job.salary}</td>
+                        <td>{job.location}</td>
+                        <td>{job.url}</td>
+                    </tr>
+                )})
+                this.setState({jobs: jobList})
+            })
+        })
+
     }
     componentDidMount() {
         let myId = this.props.match.params.username
@@ -42,8 +72,8 @@ export default class RecruiterProfile extends Component {
                let jobList =  response.data.map( job =>{
                    var buttonKey = `edit#${job._id}`
                 return(
-                    <tr key={job._id}>
-                        <Button onClick={this.editJob} id={buttonKey}>edit</Button>
+                    <tr name={job._id} key={job._id}>
+                        <Button onClick={this.deleteJob} id={buttonKey}>delete</Button>
                         <td>{job.title}</td>
                         <td>{job.jobDescription}</td>
                         <td>{job.skills}</td>

@@ -1,6 +1,12 @@
 // recruiter DELETE account form DELETE / ----------------------------------------------
 var express = require('express')
     , router = express.Router()
+    var mongoose = require('../dbConnection.js')
+    const RecruiterSchema = require('../models/Recruiters');
+    const JobSchema = require('../models/Jobs');
+    
+    const Recruiter = mongoose.model('Recruiter', RecruiterSchema);
+    const Job = mongoose.model('Job', JobSchema);
 
 router.delete('/recruiter/:recruiter_id', (req, res) => {
     Recruiter.remove({
