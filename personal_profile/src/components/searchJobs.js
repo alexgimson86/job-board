@@ -23,7 +23,7 @@ export default class SearchJobs extends Component {
         })
     }
     componentDidMount() {
-        axios.get('http://localhost:4000/job/' + this.props.match.params.username).then(results => {
+        axios.post('http://localhost:4000/jobs/search/title', {searchString: this.props.location.state.searchString}).then(results => {
             let list = results.data.map(job => {
                 var buttonStyle = {
                     'float': 'left'
@@ -62,7 +62,8 @@ export default class SearchJobs extends Component {
                     back
                 </Button>
                 <Jumbotron>
-                    <h4> {this.props.match.params.username}'s</h4> jobs list
+                    <h4>search jobs by title with search string...</h4>
+                    {this.props.location.state.searchString}
             </Jumbotron>
                 <ListGroup>
                     {this.state.jobs ? this.state.jobs : ''}

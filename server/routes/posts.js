@@ -156,6 +156,12 @@ router.post('/student/signup', (req, res) => {
       }
     });
   })})
+  router.post('/jobs/search/title',(req,res)=>{
+      var searchString = req.body.searchString
+      Job.find( { $text: { $search: "\"" + searchString + "\"" } }, (err, jobs)=>{
+        res.json(jobs);
+      } )
+  })
   router.post('/recruiter/signup', (req, res) => {
     console.log('in /recruiter/signup, req.body sent is :\n', req.body)
     var recruiter = new Recruiter(req.body);

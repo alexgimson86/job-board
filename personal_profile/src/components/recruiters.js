@@ -94,7 +94,7 @@ export default class RecruiterList extends Component {
             return <Redirect to={{ pathname: this.state.redirect }} />
         }
         else if (this.state.redirectToSearch) {
-            return <Redirect to={{ pathname: this.state.redirectToSearch, state:this.state.searchString }} />
+            return <Redirect to={{ pathname: this.state.redirectToSearch, state:{ searchString: this.state.searchString }}} />
         }
        
         else if (this.state.redirectToProfile) {
