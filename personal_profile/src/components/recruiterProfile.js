@@ -22,7 +22,7 @@ export default class RecruiterProfile extends Component {
             editJob: null,
         }
     }
-    deleteJob=(event) =>{
+    deleteJob= (event) => {
         //alert(event.target.id)
         var newId = event.target.id.split('#')[1]
         let myId = this.props.match.params.username

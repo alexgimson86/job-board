@@ -55,6 +55,5 @@ var JobSchema = new Schema(
     ref: 'Students'
   }
 });
-JobSchema.index( { title: "text" } )
 
 module.exports = JobSchema;

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../styles/personalForm.css'
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
-import { Table, Button, Container, ButtonToolbar, Tabs, Tab, Nav, Row, Col } from 'react-bootstrap'
+import { Table, Button, Container, Dropdown, DropdownButton, Tabs, Tab, Nav, Row, Col } from 'react-bootstrap'
 import RecruiterComponent from './recruiterComponent';
 import Profile from './profile';
 export default class RecruiterList extends Component {
@@ -20,6 +20,8 @@ export default class RecruiterList extends Component {
             addJobsPage: null,
             redirectToSearch: null,
             searchString: "",
+            searchMethod: "title",
+            searchPlaceholder: "search by job title"
 
         }
     }
@@ -55,13 +57,13 @@ export default class RecruiterList extends Component {
             redirectToChat: link
         })
     }
-    goToSearch = () =>{
+    goToSearch = () => {
         var search = document.getElementById('searchBar').value;
 
         this.setState({
             searchString: search,
             redirectToSearch: '/searchJobs',
-        }) 
+        })
     }
     componentDidMount() {
         axios.get('http://localhost:4000/recruiter',
@@ -70,15 +72,15 @@ export default class RecruiterList extends Component {
             let otherUsersList = [];
             let myUserInformation = {};
             let myUsername = sessionStorage.getItem("myCurrentUsername");
-        
+
             results.data.forEach((recruiters, i) => {
 
-                if (i === 0){
+                if (i === 0) {
                     var myInfo = recruiters[0]
                     myUserInformation = this.studentList(myInfo)
                 }
                 else
-                otherUsersList.push(this.studentList(recruiters));
+                    otherUsersList.push(this.studentList(recruiters));
             })
             this.setState({
                 mappedList: otherUsersList,
@@ -89,31 +91,36 @@ export default class RecruiterList extends Component {
             console.log(err);
         })
     }
+    setSearch = (event) =>{
+            let s = `search by job ${event.target.id}`
+            this.setState({
+                searchMethod: event.target.id,
+                searchPlaceholder: s,
+            })
+    }
     render() {
         if (this.state.redirect) {
             return <Redirect to={{ pathname: this.state.redirect }} />
         }
         else if (this.state.redirectToSearch) {
-            return <Redirect to={{ pathname: this.state.redirectToSearch, state:{ searchString: this.state.searchString }}} />
+            return <Redirect to={{ pathname: this.state.redirectToSearch, state: { searchString: this.state.searchString, searchMethod: this.state.searchMethod } }} />
         }
-       
+
         else if (this.state.redirectToProfile) {
             return <Redirect to={{ pathname: this.state.redirectToProfile, state: { myId: this.state.myInfo.key } }} />
         }
-        else if(this.state.redirectToChat){
+        else if (this.state.redirectToChat) {
             return <Redirect to={{ pathname: this.state.redirectToChat, state: { isRecruiter: false } }} />
         }
         else {
-            let searchCSS = {
-                float: 'right',
-            }
+            
             return (
                 <Container>
                     <Nav>
                         <Nav.Item>
                             <Nav.Link className="justify-content-start" onClick={this.handleLogout}>
                                 log out
-                            </Nav.Link>     
+                            </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link className="justify-content-end" onClick={this.goToChat} eventKey="link-1">                  chat board
@@ -123,17 +130,24 @@ export default class RecruiterList extends Component {
                             <Nav.Link className="justify-content-end" onClick={this.goToProfile} eventKey="link-1">                    {this.props.match.params.username}
                             </Nav.Link>
                         </Nav.Item>
-                        <br></br>
-                        
-                    </Nav>
-                    <div >
-                        <span style={searchCSS}>
-                        search by title{"   "}
-                        <input   id="searchBar" type="text" placeholder="Search by title.."/>{' '}
+                    <Col></Col>
+                    <Nav.Item>
+                    
+                        search by {this.state.searchMethod}:{' '}
+                        <input id="searchBar" size="25" type="text" placeholder={this.state.searchPlaceholder} />
+                    </Nav.Item>
+                    <Nav.Item>
                         <Button onClick={this.goToSearch}>go</Button>
-                        </span>
-                        <br/>
-                    </div>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <DropdownButton variant="secondary" id="dropdown-basic-button" title="options">
+                            <Dropdown.Item  onClick={this.setSearch} id="title">search job title</Dropdown.Item>
+                            <Dropdown.Item onClick={this.setSearch} id="description">search job description</Dropdown.Item>
+                            <Dropdown.Item  onClick={this.setSearch} id="location">search job location</Dropdown.Item>
+                        </DropdownButton>
+                    </Nav.Item>
+                    </Nav>
+                    <br />
                     <br />
                     <Container>
                         <Table hover responsive>
