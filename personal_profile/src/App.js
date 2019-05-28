@@ -15,6 +15,7 @@ import RecruiterList from './components/recruiters';
 import RecruiterProfile from './components/recruiterProfile';
 import JobList from './components/jobList';
 import SearchJobs from './components/searchJobs';
+import Inbox from './components/inbox';
 class App extends Component {
   render() {
     return (
@@ -34,6 +35,7 @@ class App extends Component {
           <Route exact path="/recruiterProfilePage/:username" component={RecruiterProfile}/>
           <Route exact path="/jobList/:username" component={JobList}/>
           <Route exact path="/searchJobs" component={SearchJobs}/>
+          <Route exact path="/inbox"  component={Inbox} />
         </Router>
       </div>
     );

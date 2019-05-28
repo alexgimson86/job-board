@@ -17,6 +17,7 @@ export default class RecruiterList extends Component {
             myInfo: null,
             redirectToProfile: null,
             redirectToChat: null,
+            redirectToMessages: null,
             addJobsPage: null,
             redirectToSearch: null,
             searchString: "",
@@ -91,6 +92,11 @@ export default class RecruiterList extends Component {
             console.log(err);
         })
     }
+    goToMessages = () => {
+        this.setState({
+            redirectToMessages: '/inbox'
+        })
+    }
     setSearch = (event) =>{
             let s = `search by job ${event.target.id}`
             this.setState({
@@ -112,6 +118,9 @@ export default class RecruiterList extends Component {
         else if (this.state.redirectToChat) {
             return <Redirect to={{ pathname: this.state.redirectToChat, state: { isRecruiter: false } }} />
         }
+        else if (this.state.redirectToMessages) {
+            return <Redirect to={{ pathname: this.state.redirectToMessages }} />
+        }
         else {
             
             return (
@@ -123,11 +132,16 @@ export default class RecruiterList extends Component {
                             </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link className="justify-content-end" onClick={this.goToChat} eventKey="link-1">                  chat board
+                            <Nav.Link className="justify-content-end" onClick={this.goToChat}>                  chat board
                             </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link className="justify-content-end" onClick={this.goToProfile} eventKey="link-1">                    {this.props.match.params.username}
+                            <Nav.Link className="justify-content-end" onClick={this.goToProfile}>                    {this.props.match.params.username}
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link className="justify-content-end" onClick={this.goToMessages}>
+                                messages
                             </Nav.Link>
                         </Nav.Item>
                     <Col></Col>
