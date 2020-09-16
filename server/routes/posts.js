@@ -18,7 +18,7 @@ const StudentSchema = require('../models/Students');
 const InstructorSchema = require('../models/Instructors');
 const ResumeSchema = require('../models/Resumes');
 const UserSchema = require('../models/Users')
-const MessageSchema = require('../models/Messages')
+const MessageSchema = require('../models/Message')
 
 const ObjectID = require('mongodb').ObjectID;
 const Recruiter = mongoose.model('Recruiter', RecruiterSchema);
@@ -27,7 +27,7 @@ const Job = mongoose.model('Job', JobSchema);
 const Instructor = mongoose.model('Instructor', InstructorSchema);
 const Resume = mongoose.model('Resume', ResumeSchema);
 const User = mongoose.model('User', UserSchema);
-const Messages = mongoose.model('Messages', MessageSchema);
+const Message = mongoose.model('Message', MessageSchema);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -128,6 +128,9 @@ router.post('/job', (req, res) => {
       res.json({ code: 400, message: "Recruiter job post failed", error: err });
     });
 });
+router.post('/send_message', (req, res)=>{
+
+});
 router.post('/resume/post/:username', upload.any(), (req, res) => {
   var resumeId = null;
   console.log(req.files)
@@ -203,8 +206,8 @@ router.post('/instructor/signup', (req, res) => {
 });
 
 router.post('/post_message', (req, res) => {
-  var messages = new Messages(req.body);
-  messages.save(err => {
+  var message = new Message(req.body);
+  message.save(err => {
     if (err) {
       console.log(err)
     }

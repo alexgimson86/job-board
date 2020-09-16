@@ -35,7 +35,7 @@ class App extends Component {
           <Route exact path="/recruiterProfilePage/:username" component={RecruiterProfile}/>
           <Route exact path="/jobList/:username" component={JobList}/>
           <Route exact path="/searchJobs" component={SearchJobs}/>
-          <Route exact path="/inbox"  component={Inbox} />
+          <Route exact path="/composeMessage/:username"  component={Inbox} />
         </Router>
       </div>
     );

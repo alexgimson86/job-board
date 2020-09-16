@@ -93,8 +93,9 @@ export default class RecruiterList extends Component {
         })
     }
     goToMessages = () => {
+        let myUsername = sessionStorage.getItem("myCurrentUsername");
         this.setState({
-            redirectToMessages: '/inbox'
+            redirectToMessages: `/${myUsername}/inbox`
         })
     }
     setSearch = (event) =>{
@@ -163,7 +164,7 @@ export default class RecruiterList extends Component {
                     </Nav>
                     <br />
                     <br />
-                    <Container>
+                    <Container >
                         <Table hover responsive>
                             <thead>
                                 <tr>
