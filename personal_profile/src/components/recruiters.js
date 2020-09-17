@@ -5,6 +5,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 import { Table, Button, Container, Dropdown, DropdownButton, Tabs, Tab, Nav, Row, Col } from 'react-bootstrap'
 import RecruiterComponent from './recruiterComponent';
+import Inbox from './inbox';
 import Profile from './profile';
 export default class RecruiterList extends Component {
     constructor(props) {
@@ -95,7 +96,7 @@ export default class RecruiterList extends Component {
     goToMessages = () => {
         let myUsername = sessionStorage.getItem("myCurrentUsername");
         this.setState({
-            redirectToMessages: `/${myUsername}/inbox`
+            redirectToMessages: `/composeMessage/${myUsername}`
         })
     }
     setSearch = (event) =>{

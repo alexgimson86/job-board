@@ -16,6 +16,7 @@ import RecruiterProfile from './components/recruiterProfile';
 import JobList from './components/jobList';
 import SearchJobs from './components/searchJobs';
 import Inbox from './components/inbox';
+import ComposeMessage from './components/composeMessage';
 class App extends Component {
   render() {
     return (
@@ -35,7 +36,8 @@ class App extends Component {
           <Route exact path="/recruiterProfilePage/:username" component={RecruiterProfile}/>
           <Route exact path="/jobList/:username" component={JobList}/>
           <Route exact path="/searchJobs" component={SearchJobs}/>
-          <Route exact path="/composeMessage/:username"  component={Inbox} />
+          <Route exact path="/composeMessage/:username"  component={ComposeMessage} />
+          <Route exact path="/inbox/:username"  component={Inbox} />
         </Router>
       </div>
     );

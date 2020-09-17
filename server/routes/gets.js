@@ -91,8 +91,8 @@ router.get('/recruiter/:username', (req, res) => {
         res.json(recruiter);
     });
 });
-router.get('/getMessages', (req,res)=>{
-    Message.find({"from": req.username}, (err, msg) =>{
+router.get('/getMessages/:username', (req,res)=>{
+    Message.find({"to": req.params.username}, (err, msg) =>{
         if(err) res.send(err)
         else res.json(msg)
     })
